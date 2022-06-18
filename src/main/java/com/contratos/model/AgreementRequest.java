@@ -2,8 +2,6 @@ package com.contratos.model;
 
 import lombok.*;
 
-import java.time.Duration;
-
 @EqualsAndHashCode
 @Getter
 @Setter
@@ -12,6 +10,7 @@ import java.time.Duration;
 @ToString
 public class AgreementRequest {
     private Long instituteId;
+    private String categoryId;
     private Double points;
     private Long days;
 }

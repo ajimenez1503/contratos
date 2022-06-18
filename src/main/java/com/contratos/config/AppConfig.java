@@ -1,9 +1,8 @@
 package com.contratos.config;
 
-import org.springframework.beans.factory.annotation.Configurable;
+import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.modelmapper.ModelMapper;
 
 @Configuration
 public class AppConfig {

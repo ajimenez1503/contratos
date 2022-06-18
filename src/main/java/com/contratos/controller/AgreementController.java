@@ -1,16 +1,15 @@
 package com.contratos.controller;
 
 import com.contratos.model.*;
-import com.contratos.service.ContratosService;
+import com.contratos.service.AgreementService;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.modelmapper.ModelMapper;
-import org.modelmapper.TypeToken;
 
-import javax.xml.datatype.Duration;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -19,20 +18,15 @@ import static java.time.Duration.ofDays;
 
 @RestController
 @RequestMapping("/api/")
-public class ContratosController {
+public class AgreementController {
 
-    private ContratosService service;
+    private AgreementService service;
     private ModelMapper modelMapper;
 
     @Autowired
-    public ContratosController(ContratosService service, ModelMapper modelMapper) {
+    public AgreementController(AgreementService service, ModelMapper modelMapper) {
         this.service = service;
         this.modelMapper = modelMapper;
-    }
-
-    @GetMapping("/status")
-    public ResponseEntity<String> status() {
-        return ResponseEntity.ok().build();
     }
 
     @GetMapping(value = "/agreements", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -43,29 +37,24 @@ public class ContratosController {
     }
 
     @GetMapping(value = "/institutes", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<Institute>> getInstitute() {
+    public ResponseEntity<List<Institute>> getInstitutes() {
         return new ResponseEntity<>(service.getInstitute(), HttpStatus.OK);
     }
 
-    @PostMapping(value = "/agreements", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> addAgreement(@RequestBody AgreementRequest request) {
-        // check if instituteID exists
-        Optional<Institute> institute = service.findInstituteById(request.getInstituteId());
-        if (!institute.isPresent()) {
-            return new ResponseEntity<>("Institute ID is not valid", HttpStatus.BAD_REQUEST);
-        }
-
-        Agreement agreement= new Agreement();
-        agreement.setInstitute(institute.get());
-        agreement.setPoints(request.getPoints());
-        agreement.setDuration(ofDays(request.getDays()));
-        service.addAgreement(agreement);
-        return ResponseEntity.accepted().build();
+    @GetMapping(value = "/categories", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<Category>> getCategories() {
+        return new ResponseEntity<>(service.getCategories(), HttpStatus.OK);
     }
 
     @GetMapping(value = "/provinces", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Set<String>> getProvinces() {
         return new ResponseEntity<>(Province.getList(), HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/categories", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> addInstitute(@RequestBody Category category) {
+        service.addCategory(category);
+        return ResponseEntity.accepted().build();
     }
 
     @PostMapping(value = "/institutes", consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -76,6 +65,28 @@ public class ContratosController {
         }
         Institute institute = modelMapper.map(instituteDTO, Institute.class);
         service.addInstitute(institute);
+        return ResponseEntity.accepted().build();
+    }
+
+    @PostMapping(value = "/agreements", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> addAgreement(@RequestBody AgreementRequest request) {
+        // check if instituteId exists
+        Optional<Institute> institute = service.findInstituteById(request.getInstituteId());
+        if (!institute.isPresent()) {
+            return new ResponseEntity<>("Institute ID (" +request.getInstituteId()  +") is not valid", HttpStatus.BAD_REQUEST);
+        }
+        // check if categoryId exists
+        Optional<Category> category = service.findCategoryById(request.getCategoryId());
+        if (!category.isPresent()) {
+            return new ResponseEntity<>("Category ID (" +request.getCategoryId()  +") is not valid", HttpStatus.BAD_REQUEST);
+        }
+
+        Agreement agreement = new Agreement();
+        agreement.setInstitute(institute.get());
+        agreement.setPoints(request.getPoints());
+        agreement.setDuration(ofDays(request.getDays()));
+        agreement.setCategory(category.get());
+        service.addAgreement(agreement);
         return ResponseEntity.accepted().build();
     }
 }

@@ -2,7 +2,6 @@ package com.contratos.model;
 
 import lombok.*;
 
-import javax.persistence.*;
 import java.time.Duration;
 
 @EqualsAndHashCode
@@ -13,7 +12,7 @@ import java.time.Duration;
 @ToString
 public class AgreementResponse {
     private Institute institute;
+    private Category category;
     private Double points;
     private Duration duration;
-
 }

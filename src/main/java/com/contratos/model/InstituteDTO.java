@@ -2,9 +2,6 @@ package com.contratos.model;
 
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-
 @EqualsAndHashCode
 @Getter
 @Setter

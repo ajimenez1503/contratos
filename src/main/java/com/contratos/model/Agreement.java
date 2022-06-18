@@ -18,6 +18,8 @@ public class Agreement {
     private Long id;
     @OneToOne
     private Institute institute;
+    @OneToOne
+    private Category category;
     private Double points;
     private Duration duration;
 }
