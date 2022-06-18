@@ -9,8 +9,11 @@ import lombok.*;
 @NoArgsConstructor
 @ToString
 public class InstituteDTO {
+    @NonNull
     private String name;
+    @NonNull
     private String address;
-    // google map address link
+    @NonNull
     private String province;
+    // link to google map address
 }

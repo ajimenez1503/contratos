@@ -63,7 +63,12 @@ public class AgreementController {
         if (!Province.isValid(instituteDTO.getProvince())) {
             return new ResponseEntity<>("Province is not valid. List of possible: " + Province.getList().toString(), HttpStatus.BAD_REQUEST);
         }
-        Institute institute = modelMapper.map(instituteDTO, Institute.class);
+        Institute institute;
+        try {
+            institute = modelMapper.map(instituteDTO, Institute.class);
+        } catch (Exception exception) {
+            return new ResponseEntity<>(exception.toString(), HttpStatus.BAD_REQUEST);
+        }
         service.addInstitute(institute);
         return ResponseEntity.accepted().build();
     }

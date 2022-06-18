@@ -16,6 +16,8 @@ import javax.persistence.Id;
 @Entity
 public class Category {
     @Id
+    @NonNull
     private String id;
+    @NonNull
     private String fullName;
 }

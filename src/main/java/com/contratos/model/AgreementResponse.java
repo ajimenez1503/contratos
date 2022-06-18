@@ -11,8 +11,12 @@ import java.time.Duration;
 @NoArgsConstructor
 @ToString
 public class AgreementResponse {
+    @NonNull
     private Institute institute;
+    @NonNull
     private Category category;
+    @NonNull
     private Double points;
+    @NonNull
     private Duration duration;
 }

@@ -17,9 +17,13 @@ import javax.persistence.Id;
 public class Institute {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @NonNull
     private Long id;
+    @NonNull
     private String name;
+    @NonNull
     private String address;
-    // google map address link
+    @NonNull
     private Province province;
+    // Link to google map address
 }
