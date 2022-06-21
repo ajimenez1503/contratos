@@ -10,11 +10,11 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.Duration;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-
-import static java.time.Duration.ofDays;
 
 @RestController
 @RequestMapping("/api/")
@@ -78,18 +78,21 @@ public class AgreementController {
         // check if instituteId exists
         Optional<Institute> institute = service.findInstituteById(request.getInstituteId());
         if (!institute.isPresent()) {
-            return new ResponseEntity<>("Institute ID (" +request.getInstituteId()  +") is not valid", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Institute ID (" + request.getInstituteId() + ") is not valid", HttpStatus.BAD_REQUEST);
         }
         // check if categoryId exists
         Optional<Category> category = service.findCategoryById(request.getCategoryId());
         if (!category.isPresent()) {
-            return new ResponseEntity<>("Category ID (" +request.getCategoryId()  +") is not valid", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Category ID (" + request.getCategoryId() + ") is not valid", HttpStatus.BAD_REQUEST);
         }
 
         Agreement agreement = new Agreement();
         agreement.setInstitute(institute.get());
         agreement.setPoints(request.getPoints());
-        agreement.setDuration(ofDays(request.getDays()));
+        agreement.setAssignedDate(new Date(System.currentTimeMillis()));
+        agreement.setInitialDate(request.getInitialDate());
+        agreement.setEndDate(request.getEndDate());
+        agreement.setDuration((Duration.between(request.getEndDate().toInstant(), request.getInitialDate().toInstant())));
         agreement.setCategory(category.get());
         service.addAgreement(agreement);
         return ResponseEntity.accepted().build();

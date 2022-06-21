@@ -2,6 +2,8 @@ package com.contratos.model;
 
 import lombok.*;
 
+import java.util.Date;
+
 @EqualsAndHashCode
 @Getter
 @Setter
@@ -15,5 +17,8 @@ public class AgreementRequest {
     private String categoryId;
     @NonNull
     private Double points;
-    private Long days;
+    @NonNull
+    private Date initialDate;
+    @NonNull
+    private Date endDate;
 }
