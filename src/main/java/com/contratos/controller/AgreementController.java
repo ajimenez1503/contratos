@@ -85,7 +85,7 @@ public class AgreementController {
     }
 
     @PostMapping(value = "/categories", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> addInstitute(@RequestBody Category category) {
+    public ResponseEntity<String> addCategories(@RequestBody Category category) {
         Category categoryCreated = service.addCategory(category);
         URI location = URI.create(String.format("/api/categories/%s", categoryCreated.getId()));
         return ResponseEntity.created(location).build();
