@@ -10,6 +10,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.time.Duration;
 import java.util.Date;
 import java.util.List;
@@ -31,7 +32,8 @@ public class AgreementController {
 
     @GetMapping(value = "/agreements", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<AgreementResponse>> getAgreements() {
-        List<AgreementResponse> agreementResponseList = modelMapper.map(service.getAgreements(), new TypeToken<List<AgreementResponse>>() {
+        List<Agreement> agreements = service.getAgreements();
+        List<AgreementResponse> agreementResponseList = modelMapper.map(agreements, new TypeToken<List<AgreementResponse>>() {
         }.getType());
         return new ResponseEntity<>(agreementResponseList, HttpStatus.OK);
     }
@@ -53,8 +55,9 @@ public class AgreementController {
 
     @PostMapping(value = "/categories", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> addInstitute(@RequestBody Category category) {
-        service.addCategory(category);
-        return ResponseEntity.accepted().build();
+        Category categoryCreated = service.addCategory(category);
+        URI location = URI.create(String.format("/api/categories/%s", categoryCreated.getId()));
+        return ResponseEntity.created(location).build();
     }
 
     @PostMapping(value = "/institutes", consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -69,8 +72,9 @@ public class AgreementController {
         } catch (Exception exception) {
             return new ResponseEntity<>(exception.toString(), HttpStatus.BAD_REQUEST);
         }
-        service.addInstitute(institute);
-        return ResponseEntity.accepted().build();
+        Institute instituteCreated = service.addInstitute(institute);
+        URI location = URI.create(String.format("/api/institutes/%d", instituteCreated.getId()));
+        return ResponseEntity.created(location).build();
     }
 
     @PostMapping(value = "/agreements", consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -94,7 +98,8 @@ public class AgreementController {
         agreement.setEndDate(request.getEndDate());
         agreement.setDuration((Duration.between(request.getEndDate().toInstant(), request.getInitialDate().toInstant())));
         agreement.setCategory(category.get());
-        service.addAgreement(agreement);
-        return ResponseEntity.accepted().build();
+        Agreement agreementCreated = service.addAgreement(agreement);
+        URI location = URI.create(String.format("/api/agreements/%d", agreementCreated.getId()));
+        return ResponseEntity.created(location).build();
     }
 }

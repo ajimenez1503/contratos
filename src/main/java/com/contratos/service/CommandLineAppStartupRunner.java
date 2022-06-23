@@ -31,10 +31,10 @@ public class CommandLineAppStartupRunner implements CommandLineRunner {
         LOG.info("Initialize categories and institutes tables");
         categoryRepository.save(new Category("TCAE", "Auxiliar de Enfermería"));
         categoryRepository.save(new Category("DUE", "Enfermería"));
-        categoryRepository.save(new Category("TCAE", "Tecnico en Ambulancia"));
+        categoryRepository.save(new Category("TER", "Tecnico en Ambulancia"));
         categoryRepository.save(new Category("FEA", "Facultativo Especialista Adjunto"));
 
-        instituteRepository.save(new Institute(0L, "Centro de salud Abla", "AV SANTOS MARTIRES, 22 04510 ABLA Abla Almería", Province.ALMERIA));
-        instituteRepository.save(new Institute(1L, "Consultorio Armuña de Almanzora", "CL ERAS, 18 04888 ARMUÑA DE ALMANZORA Armuña de Almanzora Almería", Province.ALMERIA));
+        instituteRepository.save(new Institute(1L, "Centro de salud Abla", "AV SANTOS MARTIRES, 22 04510 ABLA Abla Almería", Province.ALMERIA));
+        instituteRepository.save(new Institute(2L, "Consultorio Armuña de Almanzora", "CL ERAS, 18 04888 ARMUÑA DE ALMANZORA Armuña de Almanzora Almería", Province.ALMERIA));
     }
 }
