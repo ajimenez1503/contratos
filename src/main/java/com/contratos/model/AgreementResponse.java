@@ -3,6 +3,8 @@ package com.contratos.model;
 import lombok.*;
 
 import java.time.Duration;
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.Date;
 
 @EqualsAndHashCode
@@ -19,11 +21,11 @@ public class AgreementResponse {
     @NonNull
     private Double points;
     @NonNull
-    private Duration duration;
+    private Period duration;
     @NonNull
-    private Date initialDate;
+    private LocalDate initialDate;
     @NonNull
-    private Date endDate;
+    private LocalDate endDate;
     @NonNull
-    private Date assignedDate;
+    private LocalDate assignedDate;
 }

@@ -2,6 +2,7 @@ package com.contratos.model;
 
 import lombok.*;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @EqualsAndHashCode
@@ -18,7 +19,7 @@ public class AgreementRequest {
     @NonNull
     private Double points;
     @NonNull
-    private Date initialDate;
+    private LocalDate initialDate;
     @NonNull
-    private Date endDate;
+    private LocalDate endDate;
 }

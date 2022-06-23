@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.time.Duration;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -89,14 +91,18 @@ public class AgreementController {
         if (!category.isPresent()) {
             return new ResponseEntity<>("Category ID (" + request.getCategoryId() + ") is not valid", HttpStatus.BAD_REQUEST);
         }
+        // Check initial date is before end date.
+        if (request.getInitialDate().isAfter(request.getEndDate())) {
+            return new ResponseEntity<>("Initial date" + request.getInitialDate().toString() + " is after " + request.getEndDate().toString(), HttpStatus.BAD_REQUEST);
+        }
 
         Agreement agreement = new Agreement();
         agreement.setInstitute(institute.get());
         agreement.setPoints(request.getPoints());
-        agreement.setAssignedDate(new Date(System.currentTimeMillis()));
+        agreement.setAssignedDate(LocalDate.now(ZoneId.of("Europe/Paris")));
         agreement.setInitialDate(request.getInitialDate());
         agreement.setEndDate(request.getEndDate());
-        agreement.setDuration((Duration.between(request.getEndDate().toInstant(), request.getInitialDate().toInstant())));
+        agreement.setDuration(request.getInitialDate().until(request.getEndDate()));
         agreement.setCategory(category.get());
         Agreement agreementCreated = service.addAgreement(agreement);
         URI location = URI.create(String.format("/api/agreements/%d", agreementCreated.getId()));

@@ -10,6 +10,8 @@ import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Set;
@@ -93,11 +95,7 @@ class AgreementApplicationTests {
 
     @Test
     void postAndGetAgreementApi() throws Exception {
-        Calendar initialDate = Calendar.getInstance();
-        initialDate.set(2022, 7, 6, 0, 0, 0);
-        Calendar endDate = Calendar.getInstance();
-        endDate.set(2022, 8, 10, 0, 0, 0);
-        AgreementRequest agreementRequest = new AgreementRequest(1L, "DUE", 7.0, initialDate.getTime(), endDate.getTime());
+        AgreementRequest agreementRequest = new AgreementRequest(1L, "DUE", 7.0, LocalDate.of(2022, 7,6), LocalDate.of(2022, 8,10));
         HttpHeaders headersPost = new HttpHeaders();
         headersPost.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<Object> entityPost = new HttpEntity<Object>(agreementRequest, headersPost);
@@ -126,10 +124,7 @@ class AgreementApplicationTests {
         assertEquals(agreementRequest.getPoints(), responseGet.getBody().get(0).getPoints());
         assertEquals(agreementRequest.getInitialDate().toString(), responseGet.getBody().get(0).getInitialDate().toString());
         assertEquals(agreementRequest.getEndDate().toString(), responseGet.getBody().get(0).getEndDate().toString());
-        Calendar current = Calendar.getInstance();
-        current.set(Calendar.HOUR_OF_DAY, 0);
-        current.set(Calendar.MINUTE, 0);
-        current.set(Calendar.SECOND, 0);
-        assertEquals(current.getTime().toString(), responseGet.getBody().get(0).getAssignedDate().toString());
+        assertEquals(LocalDate.now(ZoneId.of("Europe/Paris")).toString(), responseGet.getBody().get(0).getAssignedDate().toString());
+        assertEquals("P1M4D", responseGet.getBody().get(0).getDuration().toString());
     }
 }
