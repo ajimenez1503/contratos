@@ -84,4 +84,10 @@ public class AgreementService {
         LOGGER.info("GET Category by Id {}", categoryId);
         return categoryRepository.findById(categoryId);
     }
+
+    public Optional<Agreement> findAgreementById(Long agreementId) {
+        LOGGER.info("GET Agreement by Id {}", agreementId);
+        return agreementRepository.findById(agreementId);
+    }
+
 }

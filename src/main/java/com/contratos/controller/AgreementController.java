@@ -11,10 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
-import java.time.Duration;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -40,14 +38,45 @@ public class AgreementController {
         return new ResponseEntity<>(agreementResponseList, HttpStatus.OK);
     }
 
+    @GetMapping(value = "/agreements/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<AgreementResponse> getAgreementsById(@PathVariable("id") String id) {
+        Optional<Agreement> agreement = service.findAgreementById(Long.parseLong(id));
+        if (agreement.isPresent()) {
+            AgreementResponse agreementResponse = modelMapper.map(agreement.get(), AgreementResponse.class);
+            return new ResponseEntity<>(agreementResponse, HttpStatus.OK);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
     @GetMapping(value = "/institutes", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Institute>> getInstitutes() {
         return new ResponseEntity<>(service.getInstitute(), HttpStatus.OK);
     }
 
+    @GetMapping(value = "/institutes/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Institute> getInstituteById(@PathVariable("id") String id) {
+        Optional<Institute> institute = service.findInstituteById(Long.parseLong(id));
+        if (institute.isPresent()) {
+            return new ResponseEntity<>(institute.get(), HttpStatus.OK);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
     @GetMapping(value = "/categories", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Category>> getCategories() {
         return new ResponseEntity<>(service.getCategories(), HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/categories/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Category> getCategoriesById(@PathVariable("id") String id) {
+        Optional<Category> category = service.findCategoryById(id);
+        if (category.isPresent()) {
+            return new ResponseEntity<>(category.get(), HttpStatus.OK);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @GetMapping(value = "/provinces", produces = MediaType.APPLICATION_JSON_VALUE)

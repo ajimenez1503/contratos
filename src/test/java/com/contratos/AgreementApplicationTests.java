@@ -12,7 +12,6 @@ import org.springframework.http.*;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.Calendar;
 import java.util.List;
 import java.util.Set;
 
@@ -75,6 +74,23 @@ class AgreementApplicationTests {
     }
 
     @Test
+    void getCategoriesByIdApi() throws Exception {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<Object> entity = new HttpEntity<Object>(headers);
+
+        ResponseEntity<Category> response = restTemplate.exchange(
+                "http://localhost:" + port + "/api/categories/TCAE",
+                HttpMethod.GET,
+                entity,
+                Category.class);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("TCAE", response.getBody().getId());
+        assertEquals("Auxiliar de Enfermería", response.getBody().getFullName());
+    }
+
+    @Test
     void getInstitutesApi() throws Exception {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -94,8 +110,26 @@ class AgreementApplicationTests {
     }
 
     @Test
+    void getInstitutesByIdApi() throws Exception {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<Object> entity = new HttpEntity<Object>(headers);
+
+        ResponseEntity<Institute> response = restTemplate.exchange(
+                "http://localhost:" + port + "/api/institutes/1",
+                HttpMethod.GET,
+                entity,
+                Institute.class);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("Centro de salud Abla", response.getBody().getName());
+        assertEquals(Province.ALMERIA, response.getBody().getProvince());
+    }
+
+    @Test
     void postAndGetAgreementApi() throws Exception {
-        AgreementRequest agreementRequest = new AgreementRequest(1L, "DUE", 7.0, LocalDate.of(2022, 7,6), LocalDate.of(2022, 8,10));
+        // Post agreement
+        AgreementRequest agreementRequest = new AgreementRequest(1L, "DUE", 7.0, LocalDate.of(2022, 7, 6), LocalDate.of(2022, 8, 10));
         HttpHeaders headersPost = new HttpHeaders();
         headersPost.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<Object> entityPost = new HttpEntity<Object>(agreementRequest, headersPost);
@@ -107,6 +141,7 @@ class AgreementApplicationTests {
         assertEquals(HttpStatus.CREATED, responsePost.getStatusCode());
         assertThat(responsePost.getHeaders().getLocation().toString()).contains("/api/agreements/");
 
+        // Get all the agreement
         HttpHeaders headersGet = new HttpHeaders();
         headersGet.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<Object> entityGet = new HttpEntity<Object>(headersGet);
@@ -126,5 +161,24 @@ class AgreementApplicationTests {
         assertEquals(agreementRequest.getEndDate().toString(), responseGet.getBody().get(0).getEndDate().toString());
         assertEquals(LocalDate.now(ZoneId.of("Europe/Paris")).toString(), responseGet.getBody().get(0).getAssignedDate().toString());
         assertEquals("P1M4D", responseGet.getBody().get(0).getDuration().toString());
+
+        // Get agreement by Id
+        HttpHeaders headersGetById = new HttpHeaders();
+        headersGet.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<Object> entityGetById = new HttpEntity<Object>(headersGetById);
+        ResponseEntity<AgreementResponse> responseGetById = restTemplate.exchange(
+                "http://localhost:" + port + responsePost.getHeaders().getLocation().toString(),
+                HttpMethod.GET,
+                entityGetById,
+                AgreementResponse.class);
+        assertEquals(HttpStatus.OK, responseGetById.getStatusCode());
+        assertEquals("Centro de salud Abla", responseGetById.getBody().getInstitute().getName());
+        assertEquals(Province.ALMERIA, responseGetById.getBody().getInstitute().getProvince());
+        assertEquals(agreementRequest.getCategoryId(), responseGetById.getBody().getCategory().getId());
+        assertEquals(agreementRequest.getPoints(), responseGetById.getBody().getPoints());
+        assertEquals(agreementRequest.getInitialDate().toString(), responseGetById.getBody().getInitialDate().toString());
+        assertEquals(agreementRequest.getEndDate().toString(), responseGetById.getBody().getEndDate().toString());
+        assertEquals(LocalDate.now(ZoneId.of("Europe/Paris")).toString(), responseGetById.getBody().getAssignedDate().toString());
+        assertEquals("P1M4D", responseGetById.getBody().getDuration().toString());
     }
 }

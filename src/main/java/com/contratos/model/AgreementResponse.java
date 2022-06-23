@@ -2,10 +2,8 @@ package com.contratos.model;
 
 import lombok.*;
 
-import java.time.Duration;
 import java.time.LocalDate;
 import java.time.Period;
-import java.util.Date;
 
 @EqualsAndHashCode
 @Getter
