@@ -1,0 +1,15 @@
+<h2>Categoria</h2>
+
+<hr/>
+<div *ngIf="category">
+  <div>
+    <label><b>ID: </b></label> {{category.id}}
+  </div>
+  <div>
+    <label><b>Description: </b></label> {{category.fullName}}
+  </div>
+</div>
+
+<br>
+<br>
+<button (click)="list()" class="btn btn-primary">Lista de categorias</button><br>
