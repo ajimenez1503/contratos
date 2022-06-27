@@ -2,6 +2,10 @@ package com.contratos.model;
 
 import lombok.*;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 @EqualsAndHashCode
 @Getter
 @Setter
@@ -10,10 +14,15 @@ import lombok.*;
 @ToString
 public class InstituteDTO {
     @NonNull
+    @NotNull
+    @NotEmpty
     private String name;
     @NonNull
+    @NotNull
+    @NotEmpty
     private String address;
     @NonNull
+    @NotNull
+    @NotEmpty
     private String province;
-    // link to google map address
 }

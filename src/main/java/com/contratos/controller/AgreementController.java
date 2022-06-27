@@ -10,6 +10,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -19,7 +20,7 @@ import java.util.Set;
 
 @RestController
 @RequestMapping("/api/")
-@CrossOrigin(origins = "http://localhost:4200")
+//@CrossOrigin(origins = "http://localhost:4200")
 public class AgreementController {
 
     private AgreementService service;
@@ -40,7 +41,7 @@ public class AgreementController {
     }
 
     @GetMapping(value = "/agreements/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<AgreementResponse> getAgreementsById(@PathVariable("id") String id) {
+    public ResponseEntity<AgreementResponse> getAgreementsById(@PathVariable(value = "id", required = true) String id) {
         Optional<Agreement> agreement = service.findAgreementById(Long.parseLong(id));
         if (agreement.isPresent()) {
             AgreementResponse agreementResponse = modelMapper.map(agreement.get(), AgreementResponse.class);
@@ -56,7 +57,7 @@ public class AgreementController {
     }
 
     @GetMapping(value = "/institutes/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Institute> getInstituteById(@PathVariable("id") String id) {
+    public ResponseEntity<Institute> getInstituteById(@PathVariable(value = "id", required = true) String id) {
         Optional<Institute> institute = service.findInstituteById(Long.parseLong(id));
         if (institute.isPresent()) {
             return new ResponseEntity<>(institute.get(), HttpStatus.OK);
@@ -71,7 +72,7 @@ public class AgreementController {
     }
 
     @GetMapping(value = "/categories/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Category> getCategoriesById(@PathVariable("id") String id) {
+    public ResponseEntity<Category> getCategoriesById(@PathVariable(value = "id", required = true) String id) {
         Optional<Category> category = service.findCategoryById(id);
         if (category.isPresent()) {
             return new ResponseEntity<>(category.get(), HttpStatus.OK);
@@ -86,14 +87,14 @@ public class AgreementController {
     }
 
     @PostMapping(value = "/categories", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> addCategories(@RequestBody Category category) {
+    public ResponseEntity<String> addCategories(@Valid @RequestBody Category category) {
         Category categoryCreated = service.addCategory(category);
         URI location = URI.create(String.format("/api/categories/%s", categoryCreated.getId()));
         return ResponseEntity.created(location).build();
     }
 
     @PostMapping(value = "/institutes", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> addInstitute(@RequestBody InstituteDTO instituteDTO) {
+    public ResponseEntity<String> addInstitute(@Valid @RequestBody InstituteDTO instituteDTO) {
         // Check if province is valid
         if (!Province.isValid(instituteDTO.getProvince())) {
             return new ResponseEntity<>("Province is not valid. List of possible: " + Province.getList().toString(), HttpStatus.BAD_REQUEST);
@@ -110,7 +111,7 @@ public class AgreementController {
     }
 
     @PostMapping(value = "/agreements", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> addAgreement(@RequestBody AgreementRequest request) {
+    public ResponseEntity<String> addAgreement(@Valid @RequestBody AgreementRequest request) {
         // check if instituteId exists
         Optional<Institute> institute = service.findInstituteById(request.getInstituteId());
         if (!institute.isPresent()) {
