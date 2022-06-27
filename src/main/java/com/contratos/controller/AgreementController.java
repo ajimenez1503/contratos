@@ -124,7 +124,7 @@ public class AgreementController {
         }
         // Check initial date is before end date.
         if (request.getInitialDate().isAfter(request.getEndDate())) {
-            return new ResponseEntity<>("Initial date" + request.getInitialDate().toString() + " is after " + request.getEndDate().toString(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Initial date '" + request.getInitialDate().toString() + "' is after '" + request.getEndDate().toString() + "'", HttpStatus.BAD_REQUEST);
         }
 
         Agreement agreement = new Agreement();

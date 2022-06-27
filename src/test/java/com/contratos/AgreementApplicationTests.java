@@ -12,6 +12,7 @@ import org.springframework.http.*;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Set;
 
@@ -52,6 +53,7 @@ class AgreementApplicationTests {
         assertEquals(Province.getList(), response.getBody());
     }
 
+
     @Test
     void getCategoriesApi() throws Exception {
         HttpHeaders headers = new HttpHeaders();
@@ -91,6 +93,36 @@ class AgreementApplicationTests {
     }
 
     @Test
+    void postCategoriesApi() throws Exception {
+        Category category = new Category( "TEST", "test");
+        HttpHeaders headersPost = new HttpHeaders();
+        headersPost.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<Object> entityPost = new HttpEntity<Object>(category, headersPost);
+        ResponseEntity<String> responsePost = restTemplate.exchange(
+                "http://localhost:" + port + "/api/categories",
+                HttpMethod.POST,
+                entityPost,
+                String.class);
+        assertEquals(HttpStatus.CREATED, responsePost.getStatusCode());
+        assertThat(responsePost.getHeaders().getLocation().toString()).contains("/api/categories/TEST");
+    }
+
+    @Test
+    void invalidPostCategoriesApi() throws Exception {
+        Category category = new Category( "DUE", "");
+        HttpHeaders headersPost = new HttpHeaders();
+        headersPost.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<Object> entityPost = new HttpEntity<Object>(category, headersPost);
+        ResponseEntity<String> responsePost = restTemplate.exchange(
+                "http://localhost:" + port + "/api/categories",
+                HttpMethod.POST,
+                entityPost,
+                String.class);
+        assertEquals(HttpStatus.BAD_REQUEST, responsePost.getStatusCode());
+        assertThat(responsePost.getBody()).contains("Validation error");
+    }
+
+    @Test
     void getInstitutesApi() throws Exception {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -127,9 +159,55 @@ class AgreementApplicationTests {
     }
 
     @Test
+    void postInstitutesApi() throws Exception {
+        InstituteDTO institute = new InstituteDTO("centro salud", "avenida estacion", "ALMERIA");
+        HttpHeaders headersPost = new HttpHeaders();
+        headersPost.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<Object> entityPost = new HttpEntity<Object>(institute, headersPost);
+        ResponseEntity<String> responsePost = restTemplate.exchange(
+                "http://localhost:" + port + "/api/institutes",
+                HttpMethod.POST,
+                entityPost,
+                String.class);
+        assertEquals(HttpStatus.CREATED, responsePost.getStatusCode());
+        assertThat(responsePost.getHeaders().getLocation().toString()).contains("/api/institutes/");
+    }
+
+    @Test
+    void invalidProvincePostInstitutesApi() throws Exception {
+        InstituteDTO institute = new InstituteDTO("centro salud", "avenida estacion", "wrongprovince");
+        HttpHeaders headersPost = new HttpHeaders();
+        headersPost.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<Object> entityPost = new HttpEntity<Object>(institute, headersPost);
+        ResponseEntity<String> responsePost = restTemplate.exchange(
+                "http://localhost:" + port + "/api/institutes",
+                HttpMethod.POST,
+                entityPost,
+                String.class);
+        assertEquals(HttpStatus.BAD_REQUEST, responsePost.getStatusCode());
+        assertThat(responsePost.getBody()).contains("Province is not valid");
+    }
+
+    @Test
+    void invalidEmptyFieldPostInstitutesApi() throws Exception {
+        InstituteDTO institute = new InstituteDTO("", "", "ALMERIA");
+        HttpHeaders headersPost = new HttpHeaders();
+        headersPost.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<Object> entityPost = new HttpEntity<Object>(institute, headersPost);
+        ResponseEntity<String> responsePost = restTemplate.exchange(
+                "http://localhost:" + port + "/api/institutes",
+                HttpMethod.POST,
+                entityPost,
+                String.class);
+        assertEquals(HttpStatus.BAD_REQUEST, responsePost.getStatusCode());
+        assertThat(responsePost.getBody()).contains("Validation error");
+    }
+
+    @Test
     void postAndGetAgreementApi() throws Exception {
         // Post agreement
-        AgreementRequest agreementRequest = new AgreementRequest(1L, "DUE", 7.0, LocalDate.of(2022, 7, 6), LocalDate.of(2022, 8, 10));
+        LocalDate tomorrow = LocalDate.now().plus(1, ChronoUnit.DAYS);
+        AgreementRequest agreementRequest = new AgreementRequest(1L, "DUE", 7.0, tomorrow, tomorrow.plus(30, ChronoUnit.DAYS));
         HttpHeaders headersPost = new HttpHeaders();
         headersPost.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<Object> entityPost = new HttpEntity<Object>(agreementRequest, headersPost);
@@ -160,7 +238,7 @@ class AgreementApplicationTests {
         assertEquals(agreementRequest.getInitialDate().toString(), responseGet.getBody().get(0).getInitialDate().toString());
         assertEquals(agreementRequest.getEndDate().toString(), responseGet.getBody().get(0).getEndDate().toString());
         assertEquals(LocalDate.now(ZoneId.of("Europe/Paris")).toString(), responseGet.getBody().get(0).getAssignedDate().toString());
-        assertEquals("P1M4D", responseGet.getBody().get(0).getDuration().toString());
+        assertEquals("P1M", responseGet.getBody().get(0).getDuration().toString());
 
         // Get agreement by Id
         HttpHeaders headersGetById = new HttpHeaders();
@@ -179,6 +257,70 @@ class AgreementApplicationTests {
         assertEquals(agreementRequest.getInitialDate().toString(), responseGetById.getBody().getInitialDate().toString());
         assertEquals(agreementRequest.getEndDate().toString(), responseGetById.getBody().getEndDate().toString());
         assertEquals(LocalDate.now(ZoneId.of("Europe/Paris")).toString(), responseGetById.getBody().getAssignedDate().toString());
-        assertEquals("P1M4D", responseGetById.getBody().getDuration().toString());
+        assertEquals("P1M", responseGetById.getBody().getDuration().toString());
+    }
+
+    @Test
+    void invalidInstitutePostAgreementsApi() throws Exception {
+        LocalDate tomorrow = LocalDate.now().plus(1, ChronoUnit.DAYS);
+        AgreementRequest agreementRequest = new AgreementRequest(1000L, "DUE", 7.0, tomorrow, tomorrow.plus(30, ChronoUnit.DAYS));
+        HttpHeaders headersPost = new HttpHeaders();
+        headersPost.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<Object> entityPost = new HttpEntity<Object>(agreementRequest, headersPost);
+        ResponseEntity<String> responsePost = restTemplate.exchange(
+                "http://localhost:" + port + "/api/agreements",
+                HttpMethod.POST,
+                entityPost,
+                String.class);
+        assertEquals(HttpStatus.BAD_REQUEST, responsePost.getStatusCode());
+        assertThat(responsePost.getBody()).contains("Institute ID (1000) is not valid");
+    }
+
+    @Test
+    void invalidCategoryPostAgreementsApi() throws Exception {
+        LocalDate tomorrow = LocalDate.now().plus(1, ChronoUnit.DAYS);
+        AgreementRequest agreementRequest = new AgreementRequest(1L, "wrongCategory", 7.0, tomorrow, tomorrow.plus(30, ChronoUnit.DAYS));
+        HttpHeaders headersPost = new HttpHeaders();
+        headersPost.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<Object> entityPost = new HttpEntity<Object>(agreementRequest, headersPost);
+        ResponseEntity<String> responsePost = restTemplate.exchange(
+                "http://localhost:" + port + "/api/agreements",
+                HttpMethod.POST,
+                entityPost,
+                String.class);
+        assertEquals(HttpStatus.BAD_REQUEST, responsePost.getStatusCode());
+        assertThat(responsePost.getBody()).contains("Category ID (wrongCategory) is not valid");
+    }
+
+    @Test
+    void invalidDatesPostAgreementsApi() throws Exception {
+        LocalDate tomorrow = LocalDate.now().plus(1, ChronoUnit.DAYS);
+        AgreementRequest agreementRequest = new AgreementRequest(1L, "DUE", 7.0, tomorrow.plus(30, ChronoUnit.DAYS), tomorrow);
+        HttpHeaders headersPost = new HttpHeaders();
+        headersPost.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<Object> entityPost = new HttpEntity<Object>(agreementRequest, headersPost);
+        ResponseEntity<String> responsePost = restTemplate.exchange(
+                "http://localhost:" + port + "/api/agreements",
+                HttpMethod.POST,
+                entityPost,
+                String.class);
+        assertEquals(HttpStatus.BAD_REQUEST, responsePost.getStatusCode());
+        assertThat(responsePost.getBody()).contains("Initial date");
+    }
+
+    @Test
+    void invalidEmptyFieldPostAgreementsApi() throws Exception {
+        LocalDate tomorrow = LocalDate.now().plus(1, ChronoUnit.DAYS);
+        AgreementRequest agreementRequest = new AgreementRequest(1L, "", 7.0, tomorrow, tomorrow.plus(30, ChronoUnit.DAYS));
+        HttpHeaders headersPost = new HttpHeaders();
+        headersPost.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<Object> entityPost = new HttpEntity<Object>(agreementRequest, headersPost);
+        ResponseEntity<String> responsePost = restTemplate.exchange(
+                "http://localhost:" + port + "/api/agreements",
+                HttpMethod.POST,
+                entityPost,
+                String.class);
+        assertEquals(HttpStatus.BAD_REQUEST, responsePost.getStatusCode());
+        assertThat(responsePost.getBody()).contains("Validation error");
     }
 }

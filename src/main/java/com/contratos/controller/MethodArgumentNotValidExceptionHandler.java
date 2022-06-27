@@ -50,7 +50,6 @@ public class MethodArgumentNotValidExceptionHandler {
             this.status = badRequest;
             this.message = validationError;
         }
-
         public void addFieldError(FieldError error) {
             fieldErrors.add(error);
         }
