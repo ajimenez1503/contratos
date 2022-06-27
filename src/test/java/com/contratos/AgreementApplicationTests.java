@@ -94,7 +94,7 @@ class AgreementApplicationTests {
 
     @Test
     void postCategoriesApi() throws Exception {
-        Category category = new Category( "TEST", "test");
+        Category category = new Category("TEST", "test");
         HttpHeaders headersPost = new HttpHeaders();
         headersPost.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<Object> entityPost = new HttpEntity<Object>(category, headersPost);
@@ -109,7 +109,7 @@ class AgreementApplicationTests {
 
     @Test
     void invalidPostCategoriesApi() throws Exception {
-        Category category = new Category( "DUE", "");
+        Category category = new Category("DUE", "");
         HttpHeaders headersPost = new HttpHeaders();
         headersPost.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<Object> entityPost = new HttpEntity<Object>(category, headersPost);

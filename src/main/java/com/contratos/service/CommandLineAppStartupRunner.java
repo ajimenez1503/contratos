@@ -16,9 +16,9 @@ public class CommandLineAppStartupRunner implements CommandLineRunner {
     private static final Logger LOG =
             LoggerFactory.getLogger(CommandLineAppStartupRunner.class);
 
-    private InstituteRepository instituteRepository;
+    private final InstituteRepository instituteRepository;
 
-    private CategoryRepository categoryRepository;
+    private final CategoryRepository categoryRepository;
 
     @Autowired
     public CommandLineAppStartupRunner(InstituteRepository instituteRepository, CategoryRepository categoryRepository) {

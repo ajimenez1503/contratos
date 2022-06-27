@@ -18,10 +18,10 @@ import java.util.Optional;
 @Service
 public class AgreementService {
     private static final Logger LOGGER = LoggerFactory.getLogger(AgreementService.class);
-    private AgreementRepository agreementRepository;
-    private InstituteRepository instituteRepository;
+    private final AgreementRepository agreementRepository;
+    private final InstituteRepository instituteRepository;
 
-    private CategoryRepository categoryRepository;
+    private final CategoryRepository categoryRepository;
 
     @Autowired
     public AgreementService(AgreementRepository agreementRepository, InstituteRepository instituteRepository, CategoryRepository categoryRepository) {

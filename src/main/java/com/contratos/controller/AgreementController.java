@@ -23,8 +23,8 @@ import java.util.Set;
 //@CrossOrigin(origins = "http://localhost:4200")
 public class AgreementController {
 
-    private AgreementService service;
-    private ModelMapper modelMapper;
+    private final AgreementService service;
+    private final ModelMapper modelMapper;
 
     @Autowired
     public AgreementController(AgreementService service, ModelMapper modelMapper) {
@@ -97,7 +97,7 @@ public class AgreementController {
     public ResponseEntity<String> addInstitute(@Valid @RequestBody InstituteDTO instituteDTO) {
         // Check if province is valid
         if (!Province.isValid(instituteDTO.getProvince())) {
-            return new ResponseEntity<>("Province is not valid. List of possible: " + Province.getList().toString(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Province is not valid. List of possible: " + Province.getList(), HttpStatus.BAD_REQUEST);
         }
         Institute institute;
         try {
@@ -124,7 +124,7 @@ public class AgreementController {
         }
         // Check initial date is before end date.
         if (request.getInitialDate().isAfter(request.getEndDate())) {
-            return new ResponseEntity<>("Initial date '" + request.getInitialDate().toString() + "' is after '" + request.getEndDate().toString() + "'", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Initial date '" + request.getInitialDate() + "' is after '" + request.getEndDate() + "'", HttpStatus.BAD_REQUEST);
         }
 
         Agreement agreement = new Agreement();

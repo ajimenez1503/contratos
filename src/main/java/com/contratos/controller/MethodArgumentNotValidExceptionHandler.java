@@ -30,7 +30,7 @@ public class MethodArgumentNotValidExceptionHandler {
 
     private Error processFieldErrors(List<FieldError> fieldErrors) {
         Error error = new Error(HttpStatus.BAD_REQUEST, "Validation error");
-        for (org.springframework.validation.FieldError fieldError: fieldErrors) {
+        for (org.springframework.validation.FieldError fieldError : fieldErrors) {
             error.addFieldError(fieldError);
         }
         return error;
@@ -50,6 +50,7 @@ public class MethodArgumentNotValidExceptionHandler {
             this.status = badRequest;
             this.message = validationError;
         }
+
         public void addFieldError(FieldError error) {
             fieldErrors.add(error);
         }
