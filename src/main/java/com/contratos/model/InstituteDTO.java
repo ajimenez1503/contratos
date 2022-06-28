@@ -19,7 +19,11 @@ public class InstituteDTO {
     @NonNull
     @NotNull
     @NotEmpty
-    private String address;
+    private String type;
+    @NonNull
+    @NotNull
+    @NotEmpty
+    private String location;
     @NonNull
     @NotNull
     @NotEmpty

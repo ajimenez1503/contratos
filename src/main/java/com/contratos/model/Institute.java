@@ -22,8 +22,9 @@ public class Institute {
     @NonNull
     private String name;
     @NonNull
-    private String address;
+    private String type;
     @NonNull
-    private Province province;
-    // Link to google map address
+    private String location;
+    @NonNull
+    private String province;
 }

@@ -1,8 +1,6 @@
 package com.contratos.service;
 
 import com.contratos.model.Category;
-import com.contratos.model.Institute;
-import com.contratos.model.Province;
 import com.contratos.respository.CategoryRepository;
 import com.contratos.respository.InstituteRepository;
 import org.slf4j.Logger;
@@ -33,8 +31,5 @@ public class CommandLineAppStartupRunner implements CommandLineRunner {
         categoryRepository.save(new Category("DUE", "Enfermería"));
         categoryRepository.save(new Category("TER", "Tecnico en Ambulancia"));
         categoryRepository.save(new Category("FEA", "Facultativo Especialista Adjunto"));
-
-        instituteRepository.save(new Institute(1L, "Centro de salud Abla", "AV SANTOS MARTIRES, 22 04510 ABLA Abla Almería", Province.ALMERIA));
-        instituteRepository.save(new Institute(2L, "Consultorio Armuña de Almanzora", "CL ERAS, 18 04888 ARMUÑA DE ALMANZORA Armuña de Almanzora Almería", Province.ALMERIA));
     }
 }

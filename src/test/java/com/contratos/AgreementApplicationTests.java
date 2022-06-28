@@ -14,7 +14,6 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
-import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -35,24 +34,6 @@ class AgreementApplicationTests {
     void contextLoads() throws Exception {
         assertThat(controller).isNotNull();
     }
-
-    @Test
-    void getProvincesApi() throws Exception {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        HttpEntity<Object> entity = new HttpEntity<Object>(headers);
-
-        ResponseEntity<Set<String>> response = restTemplate.exchange(
-                "http://localhost:" + port + "/api/provinces",
-                HttpMethod.GET,
-                entity,
-                new ParameterizedTypeReference<Set<String>>() {
-                });
-
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(Province.getList(), response.getBody());
-    }
-
 
     @Test
     void getCategoriesApi() throws Exception {
@@ -137,8 +118,8 @@ class AgreementApplicationTests {
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertTrue(1 < response.getBody().size());
-        assertEquals("Centro de salud Abla", response.getBody().get(0).getName());
-        assertEquals(Province.ALMERIA, response.getBody().get(1).getProvince());
+        assertEquals("061 Almería Centro coordinador", response.getBody().get(0).getName());
+        assertEquals("Cádiz", response.getBody().get(1).getProvince());
     }
 
     @Test
@@ -154,13 +135,13 @@ class AgreementApplicationTests {
                 Institute.class);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals("Centro de salud Abla", response.getBody().getName());
-        assertEquals(Province.ALMERIA, response.getBody().getProvince());
+        assertEquals("061 Almería Centro coordinador", response.getBody().getName());
+        assertEquals("Almería", response.getBody().getProvince());
     }
 
     @Test
     void postInstitutesApi() throws Exception {
-        InstituteDTO institute = new InstituteDTO("centro salud", "avenida estacion", "ALMERIA");
+        InstituteDTO institute = new InstituteDTO("Centro de salud Abla", "centro salud", "avenida estacion", "Almería");
         HttpHeaders headersPost = new HttpHeaders();
         headersPost.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<Object> entityPost = new HttpEntity<Object>(institute, headersPost);
@@ -174,23 +155,8 @@ class AgreementApplicationTests {
     }
 
     @Test
-    void invalidProvincePostInstitutesApi() throws Exception {
-        InstituteDTO institute = new InstituteDTO("centro salud", "avenida estacion", "wrongprovince");
-        HttpHeaders headersPost = new HttpHeaders();
-        headersPost.setContentType(MediaType.APPLICATION_JSON);
-        HttpEntity<Object> entityPost = new HttpEntity<Object>(institute, headersPost);
-        ResponseEntity<String> responsePost = restTemplate.exchange(
-                "http://localhost:" + port + "/api/institutes",
-                HttpMethod.POST,
-                entityPost,
-                String.class);
-        assertEquals(HttpStatus.BAD_REQUEST, responsePost.getStatusCode());
-        assertThat(responsePost.getBody()).contains("Province is not valid");
-    }
-
-    @Test
     void invalidEmptyFieldPostInstitutesApi() throws Exception {
-        InstituteDTO institute = new InstituteDTO("", "", "ALMERIA");
+        InstituteDTO institute = new InstituteDTO("", "", "", "");
         HttpHeaders headersPost = new HttpHeaders();
         headersPost.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<Object> entityPost = new HttpEntity<Object>(institute, headersPost);
@@ -231,8 +197,7 @@ class AgreementApplicationTests {
                 });
         assertEquals(HttpStatus.OK, responseGet.getStatusCode());
         assertTrue(0 < responseGet.getBody().size());
-        assertEquals("Centro de salud Abla", responseGet.getBody().get(0).getInstitute().getName());
-        assertEquals(Province.ALMERIA, responseGet.getBody().get(0).getInstitute().getProvince());
+        assertEquals(1L, responseGet.getBody().get(0).getInstitute().getId());
         assertEquals(agreementRequest.getCategoryId(), responseGet.getBody().get(0).getCategory().getId());
         assertEquals(agreementRequest.getPoints(), responseGet.getBody().get(0).getPoints());
         assertEquals(agreementRequest.getInitialDate().toString(), responseGet.getBody().get(0).getInitialDate().toString());
@@ -250,8 +215,7 @@ class AgreementApplicationTests {
                 entityGetById,
                 AgreementResponse.class);
         assertEquals(HttpStatus.OK, responseGetById.getStatusCode());
-        assertEquals("Centro de salud Abla", responseGetById.getBody().getInstitute().getName());
-        assertEquals(Province.ALMERIA, responseGetById.getBody().getInstitute().getProvince());
+        assertEquals(1L, responseGet.getBody().get(0).getInstitute().getId());
         assertEquals(agreementRequest.getCategoryId(), responseGetById.getBody().getCategory().getId());
         assertEquals(agreementRequest.getPoints(), responseGetById.getBody().getPoints());
         assertEquals(agreementRequest.getInitialDate().toString(), responseGetById.getBody().getInitialDate().toString());
@@ -263,7 +227,7 @@ class AgreementApplicationTests {
     @Test
     void invalidInstitutePostAgreementsApi() throws Exception {
         LocalDate tomorrow = LocalDate.now().plus(1, ChronoUnit.DAYS);
-        AgreementRequest agreementRequest = new AgreementRequest(1000L, "DUE", 7.0, tomorrow, tomorrow.plus(30, ChronoUnit.DAYS));
+        AgreementRequest agreementRequest = new AgreementRequest(100000L, "DUE", 7.0, tomorrow, tomorrow.plus(30, ChronoUnit.DAYS));
         HttpHeaders headersPost = new HttpHeaders();
         headersPost.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<Object> entityPost = new HttpEntity<Object>(agreementRequest, headersPost);
@@ -273,7 +237,7 @@ class AgreementApplicationTests {
                 entityPost,
                 String.class);
         assertEquals(HttpStatus.BAD_REQUEST, responsePost.getStatusCode());
-        assertThat(responsePost.getBody()).contains("Institute ID (1000) is not valid");
+        assertThat(responsePost.getBody()).contains("Institute ID (100000) is not valid");
     }
 
     @Test

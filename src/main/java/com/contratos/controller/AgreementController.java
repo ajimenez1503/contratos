@@ -16,7 +16,6 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 @RestController
 @RequestMapping("/api/")
@@ -81,11 +80,6 @@ public class AgreementController {
         }
     }
 
-    @GetMapping(value = "/provinces", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Set<String>> getProvinces() {
-        return new ResponseEntity<>(Province.getList(), HttpStatus.OK);
-    }
-
     @PostMapping(value = "/categories", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> addCategories(@Valid @RequestBody Category category) {
         Category categoryCreated = service.addCategory(category);
@@ -95,10 +89,6 @@ public class AgreementController {
 
     @PostMapping(value = "/institutes", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> addInstitute(@Valid @RequestBody InstituteDTO instituteDTO) {
-        // Check if province is valid
-        if (!Province.isValid(instituteDTO.getProvince())) {
-            return new ResponseEntity<>("Province is not valid. List of possible: " + Province.getList(), HttpStatus.BAD_REQUEST);
-        }
         Institute institute;
         try {
             institute = modelMapper.map(instituteDTO, Institute.class);
