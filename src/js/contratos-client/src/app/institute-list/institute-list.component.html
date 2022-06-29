@@ -1,0 +1,25 @@
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    <h2>List de centros</h2>
+  </div>
+  <div class="panel-body">
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th>Nombrre</th>
+        <th>Tipo</th>
+        <th>Localidad</th>
+        <th>Provincia</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let institute of institutes | async">
+        <td>{{institute.name}}</td>
+        <td>{{institute.type}}</td>
+        <td>{{institute.location}}</td>
+        <td>{{institute.province}}</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -9,6 +9,7 @@ import { CategoryListComponent } from './category-list/category-list.component';
 import { AgreementDetailsComponent } from './agreement-details/agreement-details.component';
 import { AgreementListComponent } from './agreement-list/agreement-list.component';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import { InstituteListComponent } from './institute-list/institute-list.component';
 
 
 @NgModule({
@@ -17,7 +18,8 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
     CreateAgreementComponent,
     CategoryListComponent,
     AgreementDetailsComponent,
-    AgreementListComponent
+    AgreementListComponent,
+    InstituteListComponent
   ],
   imports: [
     BrowserModule,

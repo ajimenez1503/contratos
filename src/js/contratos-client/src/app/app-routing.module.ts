@@ -4,11 +4,13 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { CategoryListComponent } from './category-list/category-list.component';
 import { AgreementListComponent } from './agreement-list/agreement-list.component';
+import { InstituteListComponent } from './institute-list/institute-list.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'category', pathMatch: 'full' },
   { path: 'categories', component: CategoryListComponent },
   { path: 'agreements', component: AgreementListComponent },
+  { path: 'institutes', component: InstituteListComponent },
   { path: 'add-agreement', component: CreateAgreementComponent },
   { path: 'agreement-details/:id', component: AgreementDetailsComponent },
 ];

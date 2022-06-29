@@ -1,17 +1,16 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable } from 'rxjs';;
 
 @Injectable({
   providedIn: 'root'
 })
-export class CategoryService {
-  private baseUrl = 'http://localhost:8080/api/categories';
+export class InstituteService {
+  private baseUrl = 'http://localhost:8080/api/institutes';
 
   constructor(private http: HttpClient) { }
 
-  getCategoriesList(): Observable<any> {
+  getInstitutesList(): Observable<any> {
     return this.http.get(`${this.baseUrl}`);
   }
 }
-
