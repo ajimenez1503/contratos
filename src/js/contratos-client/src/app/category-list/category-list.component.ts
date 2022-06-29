@@ -25,19 +25,8 @@ constructor(private categoryService: CategoryService,
     this.categories = this.categoryService.getCategoriesList();
   }
 
-  deleteCategory(id: String) {
-    this.categoryService.deleteCategory(id)
-      .subscribe(
-        data => {
-          console.log(data);
-          this.reloadData();
-        },
-        error => console.log(error));
-  }
-
   categoryDetails(id: String){
-    this.router.navigate(['details', id]);
+    this.router.navigate(['category-details', id]);
   }
-
 
 }

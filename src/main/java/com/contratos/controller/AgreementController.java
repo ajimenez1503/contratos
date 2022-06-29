@@ -19,7 +19,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/")
-//@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "http://localhost:4200")
 public class AgreementController {
 
     private final AgreementService service;
@@ -32,19 +32,15 @@ public class AgreementController {
     }
 
     @GetMapping(value = "/agreements", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<AgreementResponse>> getAgreements() {
-        List<Agreement> agreements = service.getAgreements();
-        List<AgreementResponse> agreementResponseList = modelMapper.map(agreements, new TypeToken<List<AgreementResponse>>() {
-        }.getType());
-        return new ResponseEntity<>(agreementResponseList, HttpStatus.OK);
+    public ResponseEntity<List<Agreement>> getAgreements() {
+        return new ResponseEntity<>(service.getAgreements(), HttpStatus.OK);
     }
 
     @GetMapping(value = "/agreements/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<AgreementResponse> getAgreementsById(@PathVariable(value = "id", required = true) String id) {
+    public ResponseEntity<Agreement> getAgreementsById(@PathVariable(value = "id", required = true) String id) {
         Optional<Agreement> agreement = service.findAgreementById(Long.parseLong(id));
         if (agreement.isPresent()) {
-            AgreementResponse agreementResponse = modelMapper.map(agreement.get(), AgreementResponse.class);
-            return new ResponseEntity<>(agreementResponse, HttpStatus.OK);
+            return new ResponseEntity<>(agreement.get(), HttpStatus.OK);
         } else {
             return ResponseEntity.notFound().build();
         }

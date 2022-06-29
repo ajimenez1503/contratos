@@ -1,14 +1,18 @@
 import { CategoryDetailsComponent } from './category-details/category-details.component';
-import { CreateCategoryComponent } from './create-category/create-category.component';
+import { AgreementDetailsComponent } from './agreement-details/agreement-details.component';
+import { CreateAgreementComponent } from './create-agreement/create-agreement.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { CategoryListComponent } from './category-list/category-list.component';
+import { AgreementListComponent } from './agreement-list/agreement-list.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'category', pathMatch: 'full' },
   { path: 'categories', component: CategoryListComponent },
-  { path: 'add', component: CreateCategoryComponent },
-  { path: 'details/:id', component: CategoryDetailsComponent },
+  { path: 'agreements', component: AgreementListComponent },
+  { path: 'add-agreement', component: CreateAgreementComponent },
+  { path: 'category-details/:id', component: CategoryDetailsComponent },
+  { path: 'agreement-details/:id', component: AgreementDetailsComponent },
 ];
 
 @NgModule({

@@ -1,0 +1,28 @@
+<h2>Agreement</h2>
+
+<hr/>
+<div *ngIf="agreement">
+  <div>
+    <label><b>Points: </b></label> {{agreement.points}}
+  </div>
+  <div>
+    <label><b>Centro: </b></label> {{agreement.institute.name}}
+  </div>
+  <div>
+    <label><b>Categoria: </b></label> {{agreement.category.id}}
+  </div>
+  <div>
+    <label><b>Fecha inicio: </b></label> {{agreement.initialDate}}
+  </div>
+  <div>
+    <label><b>Fecha fin: </b></label> {{agreement.endDate}}
+  </div>
+  <div>
+    <label><b>Fecha creacion: </b></label> {{agreement.assignedDate}}
+  </div>
+</div>
+
+<br>
+<br>
+<button (click)="list()" class="btn btn-primary">Lista de contratos</button><br>
+

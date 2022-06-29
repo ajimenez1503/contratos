@@ -189,11 +189,11 @@ class AgreementApplicationTests {
         HttpHeaders headersGet = new HttpHeaders();
         headersGet.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<Object> entityGet = new HttpEntity<Object>(headersGet);
-        ResponseEntity<List<AgreementResponse>> responseGet = restTemplate.exchange(
+        ResponseEntity<List<Agreement>> responseGet = restTemplate.exchange(
                 "http://localhost:" + port + "/api/agreements",
                 HttpMethod.GET,
                 entityGet,
-                new ParameterizedTypeReference<List<AgreementResponse>>() {
+                new ParameterizedTypeReference<List<Agreement>>() {
                 });
         assertEquals(HttpStatus.OK, responseGet.getStatusCode());
         assertTrue(0 < responseGet.getBody().size());
@@ -209,11 +209,11 @@ class AgreementApplicationTests {
         HttpHeaders headersGetById = new HttpHeaders();
         headersGet.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<Object> entityGetById = new HttpEntity<Object>(headersGetById);
-        ResponseEntity<AgreementResponse> responseGetById = restTemplate.exchange(
+        ResponseEntity<Agreement> responseGetById = restTemplate.exchange(
                 "http://localhost:" + port + responsePost.getHeaders().getLocation().toString(),
                 HttpMethod.GET,
                 entityGetById,
-                AgreementResponse.class);
+                Agreement.class);
         assertEquals(HttpStatus.OK, responseGetById.getStatusCode());
         assertEquals(1L, responseGet.getBody().get(0).getInstitute().getId());
         assertEquals(agreementRequest.getCategoryId(), responseGetById.getBody().getCategory().getId());

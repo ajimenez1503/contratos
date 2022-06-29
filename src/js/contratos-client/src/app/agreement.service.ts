@@ -5,17 +5,20 @@ import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class CategoryService {
-  private baseUrl = 'http://localhost:8080/api/categories';
+export class AgreementService {
+  private baseUrl = 'http://localhost:8080/api/agreements';
 
   constructor(private http: HttpClient) { }
 
-  getCategory(id: number): Observable<any> {
+  getAgreement(id: number): Observable<any> {
     return this.http.get(`${this.baseUrl}/${id}`);
   }
 
-  getCategoriesList(): Observable<any> {
+  getAgreementsList(): Observable<any> {
     return this.http.get(`${this.baseUrl}`);
   }
-}
 
+  createAgreement(agreementRequest: Object): Observable<Object> {
+    return this.http.post(`${this.baseUrl}`, agreementRequest);
+  }
+}

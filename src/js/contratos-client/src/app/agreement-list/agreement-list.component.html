@@ -1,0 +1,26 @@
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    <h2>List de contratos</h2>
+  </div>
+  <div class="panel-body">
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th>Puntos</th>
+        <th>Centro</th>
+        <th>Categoria</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let agreement of agreements | async">
+        <td>{{agreement.points}}</td>
+        <td>{{agreement.institute.name}}</td>
+        <td>{{agreement.category.id}}</td>
+        <td>
+          <button (click)="agreementDetails(agreement.id)" class="btn btn-info" style="margin-left: 10px">Details</button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
