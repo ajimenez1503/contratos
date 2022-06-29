@@ -1,24 +1,43 @@
-<h2>Agreement</h2>
+<h2>Contrato</h2>
 
 <hr/>
-<div *ngIf="agreement">
-  <div>
-    <label><b>Points: </b></label> {{agreement.points}}
-  </div>
-  <div>
-    <label><b>Centro: </b></label> {{agreement.institute.name}}
-  </div>
-  <div>
-    <label><b>Categoria: </b></label> {{agreement.category.id}}
-  </div>
-  <div>
-    <label><b>Fecha inicio: </b></label> {{agreement.initialDate}}
-  </div>
-  <div>
-    <label><b>Fecha fin: </b></label> {{agreement.endDate}}
-  </div>
-  <div>
-    <label><b>Fecha creacion: </b></label> {{agreement.assignedDate}}
+
+<div *ngIf="agreement" >
+  <div class="container">
+    <div class="row">
+      <div class="col-sm">
+        <div>
+          <label><b>Categoria: </b></label> {{agreement.category.id}} ({{agreement.category.fullName}})
+        </div>
+        <div>
+          <label><b>Puntos: </b></label> {{agreement.points}}
+        </div>
+        <div>
+          <label><b>Fecha inicio: </b></label> {{agreement.initialDate}}
+        </div>
+        <div>
+          <label><b>Fecha fin: </b></label> {{agreement.endDate}}
+        </div>
+        <div>
+          <label><b>Fecha creacion: </b></label> {{agreement.assignedDate}}
+        </div>
+      </div>
+      <div class="col-sm">
+        <h4>Centro</h4>
+        <div>
+          <label><b> Nombre: </b></label> {{agreement.institute.name}}
+        </div>
+        <div>
+          <label><b> Tipo: </b></label> {{agreement.institute.type}}
+        </div>
+        <div>
+          <label><b> Localidad: </b></label> {{agreement.institute.location}}
+        </div>
+        <div>
+          <label><b> Provincia: </b></label> {{agreement.institute.province}}
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
