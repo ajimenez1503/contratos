@@ -1,4 +1,3 @@
-import { CategoryDetailsComponent } from './category-details/category-details.component';
 import { AgreementDetailsComponent } from './agreement-details/agreement-details.component';
 import { CreateAgreementComponent } from './create-agreement/create-agreement.component';
 import { NgModule } from '@angular/core';
@@ -11,7 +10,6 @@ const routes: Routes = [
   { path: 'categories', component: CategoryListComponent },
   { path: 'agreements', component: AgreementListComponent },
   { path: 'add-agreement', component: CreateAgreementComponent },
-  { path: 'category-details/:id', component: CategoryDetailsComponent },
   { path: 'agreement-details/:id', component: AgreementDetailsComponent },
 ];
 

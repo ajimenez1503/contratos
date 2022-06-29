@@ -1,4 +1,3 @@
-import { CategoryDetailsComponent } from '../category-details/category-details.component';
 import { Observable } from "rxjs";
 import { CategoryService } from "../category.service";
 import { Category } from "../category";
@@ -23,10 +22,6 @@ constructor(private categoryService: CategoryService,
 
   reloadData() {
     this.categories = this.categoryService.getCategoriesList();
-  }
-
-  categoryDetails(id: String){
-    this.router.navigate(['category-details', id]);
   }
 
 }

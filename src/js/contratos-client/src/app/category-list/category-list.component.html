@@ -14,9 +14,6 @@
       <tr *ngFor="let category of categories | async">
         <td>{{category.id}}</td>
         <td>{{category.fullName}}</td>
-        <td>
-          <button (click)="categoryDetails(category.id)" class="btn btn-info" style="margin-left: 10px">Details</button>
-        </td>
       </tr>
       </tbody>
     </table>
