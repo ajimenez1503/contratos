@@ -11,9 +11,9 @@ import { Router } from '@angular/router';
 })
 export class CategoryListComponent implements OnInit {
 
-categories!: Observable<Category[]>;
+  categories!: Observable<Category[]>;
 
-constructor(private categoryService: CategoryService,
+  constructor(private categoryService: CategoryService,
         private router: Router) {}
 
   ngOnInit(): void {

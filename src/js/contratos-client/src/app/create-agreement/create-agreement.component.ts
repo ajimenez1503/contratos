@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { AgreementService } from '../agreement.service';
+import { CategoryService } from "../category.service";
+import { Category } from "../category";
 import { AgreementRequest } from '../agreementRequest';
 import { Router } from '@angular/router';
+import { Observable } from "rxjs";
 
 @Component({
   selector: 'app-create-agreement',
@@ -10,17 +13,25 @@ import { Router } from '@angular/router';
 })
 export class CreateAgreementComponent implements OnInit {
 
+  categories!: Observable<Category[]>;
   agreement: AgreementRequest = new AgreementRequest();
   submitted = false;
   submittedSuccessful = true;
 
   constructor(
+      private categoryService: CategoryService,
       private agreementService: AgreementService,
       private router: Router) {
   }
 
   ngOnInit(): void {
+    this.reloadData();
   }
+
+  reloadData() {
+    this.categories = this.categoryService.getCategoriesList();
+  }
+
   newAgreement(): void {
     this.submitted = false;
     this.submittedSuccessful = true;
