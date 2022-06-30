@@ -30,7 +30,7 @@ export class CreateAgreementComponent implements OnInit {
   save() {
     this.agreementService.createAgreement(this.agreement).subscribe(
       data => {
-        console.log(data)
+        console.log(data);
         this.agreement = new AgreementRequest();
         this.gotoList();
       },

@@ -4,6 +4,7 @@ import { AgreementService } from "../agreement.service";
 import { Agreement } from "../agreement";
 import { Component, OnInit } from "@angular/core";
 import { Router } from '@angular/router';
+import { AgreementDurationType } from "../agreementDurationType";
 
 @Component({
   selector: 'app-agreement-list',
@@ -12,6 +13,7 @@ import { Router } from '@angular/router';
 })
 export class AgreementListComponent implements OnInit {
   agreements!: Observable<Agreement[]>;
+  agreementDurationType = AgreementDurationType;
 
   constructor(private agreementService: AgreementService,
         private router: Router) {}

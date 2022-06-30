@@ -121,6 +121,8 @@ public class AgreementController {
         agreement.setEndDate(request.getEndDate());
         agreement.setDuration(request.getInitialDate().until(request.getEndDate()));
         agreement.setCategory(category.get());
+        agreement.setDurationType(request.getDurationType());
+        agreement.setAccepted((request.getAccepted()));
         Agreement agreementCreated = service.addAgreement(agreement);
         URI location = URI.create(String.format("/api/agreements/%d", agreementCreated.getId()));
         return ResponseEntity.created(location).build();

@@ -3,6 +3,7 @@ package com.contratos.model;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.time.Period;
 
@@ -27,6 +28,9 @@ public class Agreement {
     @NonNull
     private Double points;
     @NonNull
+    @NotNull
+    private AgreementDurationType durationType;
+    @NonNull
     private Period duration;
     @NonNull
     private LocalDate initialDate;
@@ -34,4 +38,7 @@ public class Agreement {
     private LocalDate endDate;
     @NonNull
     private LocalDate assignedDate;
+    @NonNull
+    @NotNull
+    private Boolean accepted;
 }

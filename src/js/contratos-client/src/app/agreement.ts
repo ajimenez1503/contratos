@@ -1,5 +1,6 @@
 import { Institute } from "./institute";
 import { Category } from "./category";
+import { AgreementDurationType } from "./agreementDurationType";
 
 export class Agreement {
     id: number;
@@ -10,6 +11,8 @@ export class Agreement {
     initialDate: String;
     endDate: String;
     assignedDate: String;
+    durationType: AgreementDurationType;
+    accepted: boolean;
 
     constructor() {
         this.id = 0;
@@ -20,6 +23,8 @@ export class Agreement {
         this.initialDate = '';
         this.endDate = '';
         this.assignedDate = '';
+        this.durationType = AgreementDurationType.SHORT;
+        this.accepted = true;
     }
 }
 

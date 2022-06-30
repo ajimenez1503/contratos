@@ -28,10 +28,16 @@ public class AgreementRequest {
     private Double points;
     @NonNull
     @NotNull
+    private AgreementDurationType durationType;
+    @NonNull
+    @NotNull
     @FutureOrPresent
     private LocalDate initialDate;
     @NonNull
     @NotNull
     @FutureOrPresent
     private LocalDate endDate;
+    @NonNull
+    @NotNull
+    private Boolean accepted;
 }

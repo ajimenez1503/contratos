@@ -51,7 +51,7 @@ class AgreementApplicationTests {
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertTrue(3 < response.getBody().size());
         assertEquals("TCAE", response.getBody().get(0).getId());
-        assertEquals("Enfermería", response.getBody().get(1).getFullName());
+        assertEquals("Enfermera", response.getBody().get(1).getFullName());
         assertEquals("TER", response.getBody().get(2).getId());
         assertEquals("Facultativo Especialista Adjunto", response.getBody().get(3).getFullName());
     }
@@ -173,7 +173,7 @@ class AgreementApplicationTests {
     void postAndGetAgreementApi() throws Exception {
         // Post agreement
         LocalDate tomorrow = LocalDate.now().plus(1, ChronoUnit.DAYS);
-        AgreementRequest agreementRequest = new AgreementRequest(1L, "DUE", 7.0, tomorrow, tomorrow.plus(30, ChronoUnit.DAYS));
+        AgreementRequest agreementRequest = new AgreementRequest(1L, "DUE", 7.0, AgreementDurationType.LONG, tomorrow, tomorrow.plus(15, ChronoUnit.DAYS), false);
         HttpHeaders headersPost = new HttpHeaders();
         headersPost.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<Object> entityPost = new HttpEntity<Object>(agreementRequest, headersPost);
@@ -200,10 +200,12 @@ class AgreementApplicationTests {
         assertEquals(1L, responseGet.getBody().get(0).getInstitute().getId());
         assertEquals(agreementRequest.getCategoryId(), responseGet.getBody().get(0).getCategory().getId());
         assertEquals(agreementRequest.getPoints(), responseGet.getBody().get(0).getPoints());
+        assertEquals(agreementRequest.getDurationType(), responseGet.getBody().get(0).getDurationType());
         assertEquals(agreementRequest.getInitialDate().toString(), responseGet.getBody().get(0).getInitialDate().toString());
         assertEquals(agreementRequest.getEndDate().toString(), responseGet.getBody().get(0).getEndDate().toString());
         assertEquals(LocalDate.now(ZoneId.of("Europe/Paris")).toString(), responseGet.getBody().get(0).getAssignedDate().toString());
-        assertEquals("P1M", responseGet.getBody().get(0).getDuration().toString());
+        assertEquals("P15D", responseGet.getBody().get(0).getDuration().toString());
+        assertEquals(agreementRequest.getAccepted(), responseGet.getBody().get(0).getAccepted());
 
         // Get agreement by Id
         HttpHeaders headersGetById = new HttpHeaders();
@@ -218,16 +220,18 @@ class AgreementApplicationTests {
         assertEquals(1L, responseGet.getBody().get(0).getInstitute().getId());
         assertEquals(agreementRequest.getCategoryId(), responseGetById.getBody().getCategory().getId());
         assertEquals(agreementRequest.getPoints(), responseGetById.getBody().getPoints());
+        assertEquals(agreementRequest.getDurationType(), responseGetById.getBody().getDurationType());
         assertEquals(agreementRequest.getInitialDate().toString(), responseGetById.getBody().getInitialDate().toString());
         assertEquals(agreementRequest.getEndDate().toString(), responseGetById.getBody().getEndDate().toString());
         assertEquals(LocalDate.now(ZoneId.of("Europe/Paris")).toString(), responseGetById.getBody().getAssignedDate().toString());
-        assertEquals("P1M", responseGetById.getBody().getDuration().toString());
+        assertEquals("P15D", responseGetById.getBody().getDuration().toString());
+        assertEquals(agreementRequest.getAccepted(), responseGetById.getBody().getAccepted());
     }
 
     @Test
     void invalidInstitutePostAgreementsApi() throws Exception {
         LocalDate tomorrow = LocalDate.now().plus(1, ChronoUnit.DAYS);
-        AgreementRequest agreementRequest = new AgreementRequest(100000L, "DUE", 7.0, tomorrow, tomorrow.plus(30, ChronoUnit.DAYS));
+        AgreementRequest agreementRequest = new AgreementRequest(100000L, "DUE", 7.0, AgreementDurationType.LONG, tomorrow, tomorrow.plus(30, ChronoUnit.DAYS), false);
         HttpHeaders headersPost = new HttpHeaders();
         headersPost.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<Object> entityPost = new HttpEntity<Object>(agreementRequest, headersPost);
@@ -243,7 +247,7 @@ class AgreementApplicationTests {
     @Test
     void invalidCategoryPostAgreementsApi() throws Exception {
         LocalDate tomorrow = LocalDate.now().plus(1, ChronoUnit.DAYS);
-        AgreementRequest agreementRequest = new AgreementRequest(1L, "wrongCategory", 7.0, tomorrow, tomorrow.plus(30, ChronoUnit.DAYS));
+        AgreementRequest agreementRequest = new AgreementRequest(1L, "wrongCategory", 7.0, AgreementDurationType.LONG, tomorrow, tomorrow.plus(30, ChronoUnit.DAYS), true);
         HttpHeaders headersPost = new HttpHeaders();
         headersPost.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<Object> entityPost = new HttpEntity<Object>(agreementRequest, headersPost);
@@ -259,7 +263,7 @@ class AgreementApplicationTests {
     @Test
     void invalidDatesPostAgreementsApi() throws Exception {
         LocalDate tomorrow = LocalDate.now().plus(1, ChronoUnit.DAYS);
-        AgreementRequest agreementRequest = new AgreementRequest(1L, "DUE", 7.0, tomorrow.plus(30, ChronoUnit.DAYS), tomorrow);
+        AgreementRequest agreementRequest = new AgreementRequest(1L, "DUE", 7.0,  AgreementDurationType.LONG, tomorrow.plus(30, ChronoUnit.DAYS), tomorrow, true);
         HttpHeaders headersPost = new HttpHeaders();
         headersPost.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<Object> entityPost = new HttpEntity<Object>(agreementRequest, headersPost);
@@ -275,7 +279,7 @@ class AgreementApplicationTests {
     @Test
     void invalidEmptyFieldPostAgreementsApi() throws Exception {
         LocalDate tomorrow = LocalDate.now().plus(1, ChronoUnit.DAYS);
-        AgreementRequest agreementRequest = new AgreementRequest(1L, "", 7.0, tomorrow, tomorrow.plus(30, ChronoUnit.DAYS));
+        AgreementRequest agreementRequest = new AgreementRequest(1L, "", 7.0, AgreementDurationType.SHORT, tomorrow, tomorrow.plus(30, ChronoUnit.DAYS), true);
         HttpHeaders headersPost = new HttpHeaders();
         headersPost.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<Object> entityPost = new HttpEntity<Object>(agreementRequest, headersPost);

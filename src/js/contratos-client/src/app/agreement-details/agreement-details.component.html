@@ -13,6 +13,15 @@
           <label><b>Puntos: </b></label> {{agreement.points}}
         </div>
         <div>
+          <label *ngIf="agreement.accepted"><b>Contrato aceptado </b></label>
+          <label *ngIf="!agreement.accepted"><b>Contrato no aceptado </b></label>
+        </div>
+        <div>
+          <label><b>Duracion: </b></label>
+          <label *ngIf="agreement.durationType == agreementDurationType.LONG"> Larga</label>
+          <label *ngIf="agreement.durationType == agreementDurationType.SHORT"> Corta</label>
+        </div>
+        <div>
           <label><b>Fecha inicio: </b></label> {{agreement.initialDate}}
         </div>
         <div>

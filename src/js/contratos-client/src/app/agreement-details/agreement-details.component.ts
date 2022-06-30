@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Agreement } from '../agreement';
+import { AgreementDurationType } from "../agreementDurationType";
 import { AgreementService } from '../agreement.service';
 import { Router, ActivatedRoute } from '@angular/router';
 
@@ -11,6 +12,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 export class AgreementDetailsComponent implements OnInit {
   id: number;
   agreement: Agreement;
+  agreementDurationType = AgreementDurationType;
 
   constructor(
         private route: ActivatedRoute,

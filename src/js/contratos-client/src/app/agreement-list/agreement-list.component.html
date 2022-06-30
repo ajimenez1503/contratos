@@ -8,6 +8,8 @@
       <tr>
         <th>Puntos</th>
         <th>Centro</th>
+        <th>Provincia</th>
+        <th>Duracion</th>
         <th>Categoria</th>
       </tr>
       </thead>
@@ -15,6 +17,9 @@
       <tr *ngFor="let agreement of agreements | async">
         <td>{{agreement.points}}</td>
         <td>{{agreement.institute.name}}</td>
+        <td>{{agreement.institute.province}}</td>
+        <td  *ngIf="agreement.durationType == agreementDurationType.LONG">Larga</td>
+        <td  *ngIf="agreement.durationType == agreementDurationType.SHORT">Corta</td>
         <td>{{agreement.category.id}}</td>
         <td>
           <button (click)="agreementDetails(agreement.id)" class="btn btn-info" style="margin-left: 10px">Details</button>
