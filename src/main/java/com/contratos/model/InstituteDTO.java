@@ -19,7 +19,7 @@ public class InstituteDTO {
     @NonNull
     @NotNull
     @NotEmpty
-    private String type;
+    private String kind;
     @NonNull
     @NotNull
     @NotEmpty

@@ -22,7 +22,7 @@ public class Institute {
     @NonNull
     private String name;
     @NonNull
-    private String type;
+    private String kind;
     @NonNull
     private String location;
     @NonNull

@@ -3,7 +3,6 @@ package com.contratos.controller;
 import com.contratos.model.*;
 import com.contratos.service.AgreementService;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -16,6 +15,7 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api/")
@@ -59,6 +59,16 @@ public class AgreementController {
         } else {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    @GetMapping(value = "/institutes/provinces", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Set<String>> getInstitutesProvinces() {
+        return new ResponseEntity<>(service.getInstitutesProvinces(), HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/institutes/kinds", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Set<String>> getInstitutesKinds() {
+        return new ResponseEntity<>(service.getInstitutesKinds(), HttpStatus.OK);
     }
 
     @GetMapping(value = "/categories", produces = MediaType.APPLICATION_JSON_VALUE)

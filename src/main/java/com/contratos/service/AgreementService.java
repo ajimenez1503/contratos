@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class AgreementService {
@@ -90,4 +91,13 @@ public class AgreementService {
         return agreementRepository.findById(agreementId);
     }
 
+    public Set<String> getInstitutesProvinces() {
+        LOGGER.info("Find all the Institute provinces");
+        return instituteRepository.findProvinces();
+    }
+
+    public Set<String> getInstitutesKinds() {
+        LOGGER.info("Find all the Institute kinds");
+        return instituteRepository.findKinds();
+    }
 }
