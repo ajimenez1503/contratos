@@ -1,10 +1,16 @@
 <h3>Crear categoria</h3>
 <div [hidden]="submitted">
   <form (ngSubmit)="onSubmit()">
+
     <div class="form-group row mb-3">
-      <label class="col-sm-2 col-form-label" for="instituteId">Centro</label>
+      <label class="col-sm-2 col-form-label" for="instituteIdBrowser">Centro</label>
       <div class="col-sm-10">
-        <input type="text" class="form-control" id="instituteId" required [(ngModel)]="agreement.instituteId" name="instituteId">
+        <input list="instituteId" class="form-control" name="instituteIdBrowser" id="instituteIdBrowser" [(ngModel)]="agreement.instituteId">
+        <datalist id="instituteId">
+          <option *ngFor="let institute of institutes | async" [value]="institute.id">
+            {{institute.name}} ({{institute.location}}) ({{institute.province}})
+          </option>
+        </datalist>
       </div>
     </div>
 
