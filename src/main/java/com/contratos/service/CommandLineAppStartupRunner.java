@@ -27,7 +27,7 @@ public class CommandLineAppStartupRunner implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         LOG.info("Initialize categories and institutes tables");
-        categoryRepository.save(new Category("TCAE", "Auxiliar de Enfermería"));
+        categoryRepository.save(new Category("TCAE", "Auxiliar de Enfermeria"));
         categoryRepository.save(new Category("DUE", "Enfermera"));
         categoryRepository.save(new Category("TER", "Tecnico en Ambulancia"));
         categoryRepository.save(new Category("FEA", "Facultativo Especialista Adjunto"));

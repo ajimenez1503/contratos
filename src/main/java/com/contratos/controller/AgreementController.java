@@ -47,8 +47,12 @@ public class AgreementController {
     }
 
     @GetMapping(value = "/institutes", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<Institute>> getInstitutes() {
-        return new ResponseEntity<>(service.getInstitute(), HttpStatus.OK);
+    public ResponseEntity<List<Institute>> getInstitutes(@RequestParam(required = false) String province, @RequestParam(required = false) String kind) {
+        if ((province == null || province.isEmpty()) && (kind == null || kind.isEmpty())) {
+            return new ResponseEntity<>(service.getInstitute(), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(service.getInstituteBy(province, kind), HttpStatus.OK);
+        }
     }
 
     @GetMapping(value = "/institutes/{id}", produces = MediaType.APPLICATION_JSON_VALUE)

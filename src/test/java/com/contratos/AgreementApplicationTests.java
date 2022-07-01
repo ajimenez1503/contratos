@@ -71,7 +71,7 @@ class AgreementApplicationTests {
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals("TCAE", response.getBody().getId());
-        assertEquals("Auxiliar de Enfermería", response.getBody().getFullName());
+        assertEquals("Auxiliar de Enfermeria", response.getBody().getFullName());
     }
 
     @Test
@@ -119,8 +119,61 @@ class AgreementApplicationTests {
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertTrue(1 < response.getBody().size());
-        assertEquals("061 Almería Centro coordinador", response.getBody().get(0).getName());
-        assertEquals("Cádiz", response.getBody().get(1).getProvince());
+        assertEquals("061 Almeria Centro coordinador", response.getBody().get(0).getName());
+        assertEquals("Cadiz", response.getBody().get(1).getProvince());
+    }
+
+    @Test
+    void getInstitutesByProvinceApi() throws Exception {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<Object> entity = new HttpEntity<Object>(headers);
+
+        ResponseEntity<List<Institute>> response = restTemplate.exchange(
+                "http://localhost:" + port + "/api/institutes?province=Almeria",
+                HttpMethod.GET,
+                entity,
+                new ParameterizedTypeReference<List<Institute>>() {
+                });
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertTrue(1 < response.getBody().size());
+        assertEquals("Almeria", response.getBody().get(0).getProvince());
+    }
+
+    @Test
+    void getInstitutesByKindApi() throws Exception {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<Object> entity = new HttpEntity<Object>(headers);
+
+        ResponseEntity<List<Institute>> response = restTemplate.exchange(
+                "http://localhost:" + port + "/api/institutes?kind=Centro de salud",
+                HttpMethod.GET,
+                entity,
+                new ParameterizedTypeReference<List<Institute>>() {
+                });
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertTrue(1 < response.getBody().size());
+        assertEquals("Centro de salud", response.getBody().get(0).getKind());
+    }
+
+    @Test
+    void getInstitutesByProvinceAndKindApi() throws Exception {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<Object> entity = new HttpEntity<Object>(headers);
+
+        ResponseEntity<List<Institute>> response = restTemplate.exchange(
+                "http://localhost:" + port + "/api/institutes?province=Almeria&kind=Centro de salud",
+                HttpMethod.GET,
+                entity,
+                new ParameterizedTypeReference<List<Institute>>() {
+                });
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertTrue(1 < response.getBody().size());
+        assertEquals("Centro de salud", response.getBody().get(0).getKind());
+        assertEquals("Almeria", response.getBody().get(0).getProvince());
     }
 
     @Test
@@ -136,8 +189,8 @@ class AgreementApplicationTests {
                 Institute.class);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals("061 Almería Centro coordinador", response.getBody().getName());
-        assertEquals("Almería", response.getBody().getProvince());
+        assertEquals("061 Almeria Centro coordinador", response.getBody().getName());
+        assertEquals("Almeria", response.getBody().getProvince());
     }
 
     @Test
@@ -155,8 +208,8 @@ class AgreementApplicationTests {
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertTrue(1 < response.getBody().size());
-        assertTrue(response.getBody().contains("Almería"));
-        assertTrue(response.getBody().contains("Cádiz"));
+        assertTrue(response.getBody().contains("Almeria"));
+        assertTrue(response.getBody().contains("Cadiz"));
     }
 
     @Test
@@ -180,7 +233,7 @@ class AgreementApplicationTests {
 
     @Test
     void postInstitutesApi() throws Exception {
-        InstituteDTO institute = new InstituteDTO("Centro de salud Abla", "centro salud", "avenida estacion", "Almería");
+        InstituteDTO institute = new InstituteDTO("Centro de salud Abla", "centro salud", "avenida estacion", "Almeria");
         HttpHeaders headersPost = new HttpHeaders();
         headersPost.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<Object> entityPost = new HttpEntity<Object>(institute, headersPost);

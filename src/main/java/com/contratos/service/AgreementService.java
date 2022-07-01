@@ -100,4 +100,17 @@ public class AgreementService {
         LOGGER.info("Find all the Institute kinds");
         return instituteRepository.findKinds();
     }
+
+    public List<Institute> getInstituteBy(String province, String kind) {
+        if (province != null && !province.isEmpty() && kind != null && !kind.isEmpty()) {
+            LOGGER.info("Find all the Institute by province {} and kind {}", province, kind);
+            return instituteRepository.findByProvinceAndKind(province, kind);
+        } else if (province != null && !province.isEmpty()) {
+            LOGGER.info("Find all the Institute by province {}", province);
+            return instituteRepository.findByProvince(province);
+        } else { // kind != null && !kind.isEmpty()
+            LOGGER.info("Find all the Institute by kind {}", kind);
+            return instituteRepository.findByKind(kind);
+        }
+    }
 }

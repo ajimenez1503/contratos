@@ -4,6 +4,7 @@ import com.contratos.model.Institute;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.List;
 import java.util.Set;
 
 public interface InstituteRepository extends JpaRepository<Institute, Long> {
@@ -12,4 +13,10 @@ public interface InstituteRepository extends JpaRepository<Institute, Long> {
 
     @Query("SELECT kind FROM Institute institute")
     Set<String> findKinds();
+
+    List<Institute> findByProvinceAndKind(String province, String kind);
+
+    List<Institute> findByProvince(String province);
+
+    List<Institute> findByKind(String kind);
 }
