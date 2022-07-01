@@ -14,6 +14,7 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -140,6 +141,44 @@ class AgreementApplicationTests {
     }
 
     @Test
+    void getInstitutesProvincesApi() throws Exception {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<Object> entity = new HttpEntity<Object>(headers);
+
+        ResponseEntity<Set<String>> response = restTemplate.exchange(
+                "http://localhost:" + port + "/api/institutes/provinces",
+                HttpMethod.GET,
+                entity,
+                new ParameterizedTypeReference<Set<String>>() {
+                });
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertTrue(1 < response.getBody().size());
+        assertTrue(response.getBody().contains("Almería"));
+        assertTrue(response.getBody().contains("Cádiz"));
+    }
+
+    @Test
+    void getInstitutesKindsApi() throws Exception {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<Object> entity = new HttpEntity<Object>(headers);
+
+        ResponseEntity<Set<String>> response = restTemplate.exchange(
+                "http://localhost:" + port + "/api/institutes/kinds",
+                HttpMethod.GET,
+                entity,
+                new ParameterizedTypeReference<Set<String>>() {
+                });
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertTrue(1 < response.getBody().size());
+        assertTrue(response.getBody().contains("Centro de salud"));
+        assertTrue(response.getBody().contains("Centro de consultas externas"));
+    }
+
+    @Test
     void postInstitutesApi() throws Exception {
         InstituteDTO institute = new InstituteDTO("Centro de salud Abla", "centro salud", "avenida estacion", "Almería");
         HttpHeaders headersPost = new HttpHeaders();
@@ -263,7 +302,7 @@ class AgreementApplicationTests {
     @Test
     void invalidDatesPostAgreementsApi() throws Exception {
         LocalDate tomorrow = LocalDate.now().plus(1, ChronoUnit.DAYS);
-        AgreementRequest agreementRequest = new AgreementRequest(1L, "DUE", 7.0,  AgreementDurationType.LONG, tomorrow.plus(30, ChronoUnit.DAYS), tomorrow, true);
+        AgreementRequest agreementRequest = new AgreementRequest(1L, "DUE", 7.0, AgreementDurationType.LONG, tomorrow.plus(30, ChronoUnit.DAYS), tomorrow, true);
         HttpHeaders headersPost = new HttpHeaders();
         headersPost.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<Object> entityPost = new HttpEntity<Object>(agreementRequest, headersPost);
