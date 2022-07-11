@@ -36,81 +36,89 @@ public class AgreementService {
         return agreementRepository.findAll();
     }
 
-    public List<Institute> getInstitute() {
-        LOGGER.info("GET Institute");
-        return instituteRepository.findAll();
-    }
-
     public List<Category> getCategories() {
         LOGGER.info("GET Categories");
         return categoryRepository.findAll();
     }
 
     public Agreement addAgreement(Agreement agreement) {
-        LOGGER.info("POST Agreements {}", agreement);
+        LOGGER.info("POST Agreements '{}'", agreement);
         return agreementRepository.save(agreement);
     }
 
     public Institute addInstitute(Institute institute) {
-        LOGGER.info("POST Institute {}", institute);
+        LOGGER.info("POST Institute '{}'", institute);
         return instituteRepository.save(institute);
     }
 
     public Category addCategory(Category category) {
-        LOGGER.info("POST Category {}", category);
+        LOGGER.info("POST Category '{}'", category);
         return categoryRepository.save(category);
     }
 
     public void deleteAgreement(Agreement agreement) {
-        LOGGER.info("DELETE Agreements {}", agreement);
+        LOGGER.info("DELETE Agreements '{}'", agreement);
         agreementRepository.delete(agreement);
     }
 
     public void deleteInstitute(Institute institute) {
-        LOGGER.info("DELETE Institute {}", institute);
+        LOGGER.info("DELETE Institute '{}'", institute);
         instituteRepository.delete(institute);
     }
 
     public void deleteCategory(Category category) {
-        LOGGER.info("DELETE Category {}", category);
+        LOGGER.info("DELETE Category '{}'", category);
         categoryRepository.delete(category);
     }
 
     public Optional<Institute> findInstituteById(Long instituteId) {
-        LOGGER.info("GET Institute by Id {}", instituteId);
+        LOGGER.info("GET Institute by Id '{}'", instituteId);
         return instituteRepository.findById(instituteId);
     }
 
     public Optional<Category> findCategoryById(String categoryId) {
-        LOGGER.info("GET Category by Id {}", categoryId);
+        LOGGER.info("GET Category by Id '{}'", categoryId);
         return categoryRepository.findById(categoryId);
     }
 
     public Optional<Agreement> findAgreementById(Long agreementId) {
-        LOGGER.info("GET Agreement by Id {}", agreementId);
+        LOGGER.info("GET Agreement by Id '{}'", agreementId);
         return agreementRepository.findById(agreementId);
     }
 
-    public Set<String> getInstitutesProvinces() {
-        LOGGER.info("Find all the Institute provinces");
-        return instituteRepository.findProvinces();
+    public Set<String> getInstitutesProvincesBy(String kind) {
+        if (kind != null && !kind.isEmpty()) {
+            LOGGER.info("Find all the Institute provinces by kind '{}'", kind);
+            return instituteRepository.findProvincesByKind(kind);
+        } else {
+            LOGGER.info("Find all the Institute provinces");
+            return instituteRepository.findProvinces();
+        }
     }
 
-    public Set<String> getInstitutesKinds() {
-        LOGGER.info("Find all the Institute kinds");
-        return instituteRepository.findKinds();
+    public Set<String> getInstitutesKindsBy(String province) {
+        if (province != null && !province.isEmpty()) {
+            LOGGER.info("Find all the Institute kind by province '{}'", province);
+            return instituteRepository.findKindsByProvince(province);
+        } else {
+            LOGGER.info("Find all the Institute kinds");
+            return instituteRepository.findKinds();
+        }
     }
 
     public List<Institute> getInstituteBy(String province, String kind) {
         if (province != null && !province.isEmpty() && kind != null && !kind.isEmpty()) {
-            LOGGER.info("Find all the Institute by province {} and kind {}", province, kind);
+            LOGGER.info("Find all the Institute by province '{}' and kind '{}'", province, kind);
             return instituteRepository.findByProvinceAndKind(province, kind);
         } else if (province != null && !province.isEmpty()) {
-            LOGGER.info("Find all the Institute by province {}", province);
+            LOGGER.info("Find all the Institute by province '{}'", province);
             return instituteRepository.findByProvince(province);
-        } else { // kind != null && !kind.isEmpty()
-            LOGGER.info("Find all the Institute by kind {}", kind);
+        } else if (kind != null && !kind.isEmpty()) {
+            LOGGER.info("Find all the Institute by kind '{}'", kind);
             return instituteRepository.findByKind(kind);
+        } else {
+            LOGGER.info("Find all the Institute");
+            return instituteRepository.findAll();
         }
     }
 }

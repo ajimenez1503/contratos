@@ -48,11 +48,7 @@ public class AgreementController {
 
     @GetMapping(value = "/institutes", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Institute>> getInstitutes(@RequestParam(required = false) String province, @RequestParam(required = false) String kind) {
-        if ((province == null || province.isEmpty()) && (kind == null || kind.isEmpty())) {
-            return new ResponseEntity<>(service.getInstitute(), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(service.getInstituteBy(province, kind), HttpStatus.OK);
-        }
+        return new ResponseEntity<>(service.getInstituteBy(province, kind), HttpStatus.OK);
     }
 
     @GetMapping(value = "/institutes/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -66,13 +62,13 @@ public class AgreementController {
     }
 
     @GetMapping(value = "/institutes/provinces", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Set<String>> getInstitutesProvinces() {
-        return new ResponseEntity<>(service.getInstitutesProvinces(), HttpStatus.OK);
+    public ResponseEntity<Set<String>> getInstitutesProvinces(@RequestParam(required = false) String kind) {
+        return new ResponseEntity<>(service.getInstitutesProvincesBy(kind), HttpStatus.OK);
     }
 
     @GetMapping(value = "/institutes/kinds", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Set<String>> getInstitutesKinds() {
-        return new ResponseEntity<>(service.getInstitutesKinds(), HttpStatus.OK);
+    public ResponseEntity<Set<String>> getInstitutesKinds(@RequestParam(required = false) String province) {
+        return new ResponseEntity<>(service.getInstitutesKindsBy(province), HttpStatus.OK);
     }
 
     @GetMapping(value = "/categories", produces = MediaType.APPLICATION_JSON_VALUE)

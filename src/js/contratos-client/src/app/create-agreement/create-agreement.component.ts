@@ -17,6 +17,11 @@ export class CreateAgreementComponent implements OnInit {
 
   categories!: Observable<Category[]>;
   institutes!: Observable<Institute[]>;
+  provinces!: Observable<String[]>;
+  provinceChoose: String = '';
+  instituteKinds!: Observable<String[]>;
+  instituteKindChoose: String = '';
+  instituteIdChoose: String = '';
 
   agreement: AgreementRequest = new AgreementRequest();
   submitted = false;
@@ -33,9 +38,15 @@ export class CreateAgreementComponent implements OnInit {
     this.reloadData();
   }
 
+  updateInstitutes() {
+    this.institutes = this.instituteService.getInstitutesListBy(this.provinceChoose, this.instituteKindChoose);
+    this.provinces = this.instituteService.getProvinces(this.instituteKindChoose);
+    this.instituteKinds = this.instituteService.getKinds(this.provinceChoose);
+  }
+
   reloadData() {
     this.categories = this.categoryService.getCategoriesList();
-    this.institutes = this.instituteService.getInstitutesList();
+    this.updateInstitutes();
   }
 
   newAgreement(): void {
@@ -60,6 +71,7 @@ export class CreateAgreementComponent implements OnInit {
 
   onSubmit() {
     this.submitted = true;
+    this.agreement.instituteId = Number(this.instituteIdChoose);
     this.save();
   }
 

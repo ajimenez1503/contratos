@@ -1,14 +1,14 @@
 export class Institute {
     id: number;
     name: String;
-    type: String;
+    kind: String;
     location: String;
     province: String;
 
     constructor() {
         this.id = 0;
         this.name = '';
-        this.type = '';
+        this.kind = '';
         this.location = '';
         this.province = '';
     }

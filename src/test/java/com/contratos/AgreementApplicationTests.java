@@ -213,6 +213,25 @@ class AgreementApplicationTests {
     }
 
     @Test
+    void getInstitutesProvincesByKindApi() throws Exception {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<Object> entity = new HttpEntity<Object>(headers);
+
+        ResponseEntity<Set<String>> response = restTemplate.exchange(
+                "http://localhost:" + port + "/api/institutes/provinces?kind=Centro de salud",
+                HttpMethod.GET,
+                entity,
+                new ParameterizedTypeReference<Set<String>>() {
+                });
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertTrue(1 < response.getBody().size());
+        assertTrue(response.getBody().contains("Almeria"));
+        assertTrue(response.getBody().contains("Cadiz"));
+    }
+
+    @Test
     void getInstitutesKindsApi() throws Exception {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -220,6 +239,25 @@ class AgreementApplicationTests {
 
         ResponseEntity<Set<String>> response = restTemplate.exchange(
                 "http://localhost:" + port + "/api/institutes/kinds",
+                HttpMethod.GET,
+                entity,
+                new ParameterizedTypeReference<Set<String>>() {
+                });
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertTrue(1 < response.getBody().size());
+        assertTrue(response.getBody().contains("Centro de salud"));
+        assertTrue(response.getBody().contains("Centro de consultas externas"));
+    }
+
+    @Test
+    void getInstitutesKindsByProvinceApi() throws Exception {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<Object> entity = new HttpEntity<Object>(headers);
+
+        ResponseEntity<Set<String>> response = restTemplate.exchange(
+                "http://localhost:" + port + "/api/institutes/kinds?province=Almeria",
                 HttpMethod.GET,
                 entity,
                 new ParameterizedTypeReference<Set<String>>() {
