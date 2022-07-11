@@ -11,6 +11,10 @@ import { Router } from '@angular/router';
 })
 export class InstituteListComponent implements OnInit {
   institutes!: Observable<Institute[]>;
+  provinces!: Observable<String[]>;
+  provinceChoose: String = '';
+  instituteKinds!: Observable<String[]>;
+  instituteKindChoose: String = '';
 
   constructor(private instituteService: InstituteService,
         private router: Router) {}
@@ -19,8 +23,14 @@ export class InstituteListComponent implements OnInit {
     this.reloadData();
   }
 
+  updateInstitutes() {
+    this.institutes = this.instituteService.getInstitutesListBy(this.provinceChoose, this.instituteKindChoose);
+    this.provinces = this.instituteService.getProvinces(this.instituteKindChoose);
+    this.instituteKinds = this.instituteService.getKinds(this.provinceChoose);
+  }
+
   reloadData() {
-    this.institutes = this.instituteService.getInstitutesList();
+    this.updateInstitutes();
   }
 
 }
