@@ -337,9 +337,31 @@ class AgreementApplicationTests {
         assertEquals("P15D", responseGet.getBody().get(0).getDuration().toString());
         assertEquals(agreementRequest.getAccepted(), responseGet.getBody().get(0).getAccepted());
 
+        // Search agreement
+        HttpHeaders headersGetSearch = new HttpHeaders();
+        headersGetSearch.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<Object> entityGetSearch = new HttpEntity<Object>(headersGetSearch);
+        ResponseEntity<List<Agreement>> responseGetSearch = restTemplate.exchange(
+                "http://localhost:" + port + "/api/agreements?category=DUE",
+                HttpMethod.GET,
+                entityGetSearch,
+                new ParameterizedTypeReference<List<Agreement>>() {
+                });
+        assertEquals(HttpStatus.OK, responseGetSearch.getStatusCode());
+        assertTrue(0 < responseGetSearch.getBody().size());
+        assertEquals(1L, responseGetSearch.getBody().get(0).getInstitute().getId());
+        assertEquals(agreementRequest.getCategoryId(), responseGetSearch.getBody().get(0).getCategory().getId());
+        assertEquals(agreementRequest.getPoints(), responseGetSearch.getBody().get(0).getPoints());
+        assertEquals(agreementRequest.getDurationType(), responseGetSearch.getBody().get(0).getDurationType());
+        assertEquals(agreementRequest.getInitialDate().toString(), responseGetSearch.getBody().get(0).getInitialDate().toString());
+        assertEquals(agreementRequest.getEndDate().toString(), responseGetSearch.getBody().get(0).getEndDate().toString());
+        assertEquals(LocalDate.now(ZoneId.of("Europe/Paris")).toString(), responseGetSearch.getBody().get(0).getAssignedDate().toString());
+        assertEquals("P15D", responseGetSearch.getBody().get(0).getDuration().toString());
+        assertEquals(agreementRequest.getAccepted(), responseGetSearch.getBody().get(0).getAccepted());
+
         // Get agreement by Id
         HttpHeaders headersGetById = new HttpHeaders();
-        headersGet.setContentType(MediaType.APPLICATION_JSON);
+        headersGetById.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<Object> entityGetById = new HttpEntity<Object>(headersGetById);
         ResponseEntity<Agreement> responseGetById = restTemplate.exchange(
                 "http://localhost:" + port + responsePost.getHeaders().getLocation().toString(),
@@ -347,7 +369,7 @@ class AgreementApplicationTests {
                 entityGetById,
                 Agreement.class);
         assertEquals(HttpStatus.OK, responseGetById.getStatusCode());
-        assertEquals(1L, responseGet.getBody().get(0).getInstitute().getId());
+        assertEquals(1L, responseGetById.getBody().getInstitute().getId());
         assertEquals(agreementRequest.getCategoryId(), responseGetById.getBody().getCategory().getId());
         assertEquals(agreementRequest.getPoints(), responseGetById.getBody().getPoints());
         assertEquals(agreementRequest.getDurationType(), responseGetById.getBody().getDurationType());

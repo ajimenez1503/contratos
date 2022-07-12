@@ -31,9 +31,13 @@ public class AgreementService {
         this.categoryRepository = categoryRepository;
     }
 
-    public List<Agreement> getAgreements() {
-        LOGGER.info("GET Agreements");
-        return agreementRepository.findAll();
+    public List<Agreement> getAgreementsBy(String Category) {
+        String requestCategory = "";
+        if (Category != null && !Category.isEmpty()) {
+            requestCategory = Category;
+        }
+        LOGGER.info("GET Agreements by category '{}'", requestCategory);
+        return agreementRepository.search(requestCategory);
     }
 
     public List<Category> getCategories() {
