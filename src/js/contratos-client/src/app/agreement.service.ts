@@ -14,8 +14,8 @@ export class AgreementService {
     return this.http.get(`${this.baseUrl}/${id}`);
   }
 
-  getAgreementsList(): Observable<any> {
-    return this.http.get(`${this.baseUrl}`);
+  getAgreementsList(category: String): Observable<any> {
+    return this.http.get(`${this.baseUrl}?category=${category}`);
   }
 
   createAgreement(agreementRequest: Object): Observable<Object> {

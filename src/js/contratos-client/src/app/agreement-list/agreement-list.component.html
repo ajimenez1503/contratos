@@ -1,4 +1,43 @@
 <div class="panel panel-primary">
+  <div class="form-group row mb-3">
+    <label class="col-sm-1 col-form-label" for="provinceId">Categoria</label>
+    <div class="col-sm-3">
+      <input list="categoryId" class="form-control" name="categoryIdBrowser" id="categoryIdBrowser" [(ngModel)]="categoryIdChosen">
+      <datalist id="categoryId">
+        <option *ngFor="let category of categories | async" [value]="category.id">
+          {{category.id}} ({{category.fullName}})
+        </option>
+      </datalist>
+    </div>
+  </div>
+  <div class="form-group row mb-3">
+    <label class="col-sm-1 col-form-label" for="provinceId">Provincia</label>
+    <div class="col-sm-3">
+      <input list="provinceId" class="form-control" name="provinceIdBrowser" id="provinceIdBrowser" [(ngModel)]="provinceChosen" (ngModelChange)="updateList()">
+      <datalist id="provinceId">
+        <option *ngFor="let province of provinces | async" [value]="province">
+        </option>
+      </datalist>
+    </div>
+    <label class="col-sm-1 col-form-label" for="instituteKindId">Tipo</label>
+    <div class="col-sm-3">
+      <input list="instituteKindId" class="form-control" name="instituteKindIdBrowser" id="instituteKindIdBrowser" [(ngModel)]="instituteKindChosen" (ngModelChange)="updateList()">
+      <datalist id="instituteKindId">
+        <option *ngFor="let instituteKind of instituteKinds | async" [value]="instituteKind">
+        </option>
+      </datalist>
+    </div>
+    <label class="col-sm-1 col-form-label" for="instituteId">Centro</label>
+    <div class="col-sm-3">
+      <input list="instituteId" class="form-control" name="instituteIdBrowser" id="instituteIdBrowser" [(ngModel)]="instituteIdChosen" (ngModelChange)="updateList()">
+      <datalist id="instituteId">
+        <option *ngFor="let institute of institutes | async" [value]="institute.id">
+          {{institute.name}} ({{institute.location}}) ({{institute.province}})
+        </option>
+      </datalist>
+    </div>
+  </div>
+
   <div class="panel-heading">
     <h2>List de contratos</h2>
   </div>
