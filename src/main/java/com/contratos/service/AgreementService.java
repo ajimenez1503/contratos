@@ -2,6 +2,7 @@ package com.contratos.service;
 
 
 import com.contratos.model.Agreement;
+import com.contratos.model.AgreementDurationType;
 import com.contratos.model.Category;
 import com.contratos.model.Institute;
 import com.contratos.respository.AgreementRepository;
@@ -12,9 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class AgreementService {
@@ -31,13 +30,29 @@ public class AgreementService {
         this.categoryRepository = categoryRepository;
     }
 
-    public List<Agreement> getAgreementsBy(String Category) {
+    public List<Agreement> getAgreementsBy(String durationType, String Category) {
+        // Category
         String requestCategory = "";
         if (Category != null && !Category.isEmpty()) {
             requestCategory = Category;
         }
-        LOGGER.info("GET Agreements by category '{}'", requestCategory);
-        return agreementRepository.search(requestCategory);
+
+        // Duration type
+        List<AgreementDurationType> requestDurationType;
+        if (durationType == null || durationType.isEmpty()) {
+            requestDurationType = new ArrayList<>(EnumSet.allOf(AgreementDurationType.class));
+        } else {
+            try {
+                requestDurationType = new ArrayList<>();
+                requestDurationType.add(AgreementDurationType.valueOf(durationType));
+            } catch (IllegalArgumentException e) {
+                LOGGER.error("Invalid value for enum {} ", durationType);
+                requestDurationType = new ArrayList<>(EnumSet.allOf(AgreementDurationType.class));
+            }
+        }
+        
+        LOGGER.info("GET Agreements by duration kind '{}' and category '{}'", requestDurationType, requestCategory);
+        return agreementRepository.search(requestDurationType, requestCategory);
     }
 
     public List<Category> getCategories() {

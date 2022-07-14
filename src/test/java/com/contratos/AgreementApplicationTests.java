@@ -342,7 +342,7 @@ class AgreementApplicationTests {
         headersGetSearch.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<Object> entityGetSearch = new HttpEntity<Object>(headersGetSearch);
         ResponseEntity<List<Agreement>> responseGetSearch = restTemplate.exchange(
-                "http://localhost:" + port + "/api/agreements?category=DUE",
+                "http://localhost:" + port + "/api/agreements?category=DUE&durationType="+ AgreementDurationType.LONG.toString(),
                 HttpMethod.GET,
                 entityGetSearch,
                 new ParameterizedTypeReference<List<Agreement>>() {

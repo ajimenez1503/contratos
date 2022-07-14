@@ -33,8 +33,9 @@ public class AgreementController {
 
     @GetMapping(value = "/agreements", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Agreement>> getAgreements(
+            @RequestParam(required = false) String durationType,
             @RequestParam(required = false) String category) {
-        return new ResponseEntity<>(service.getAgreementsBy(category), HttpStatus.OK);
+        return new ResponseEntity<>(service.getAgreementsBy(durationType, category), HttpStatus.OK);
     }
 
     @GetMapping(value = "/agreements/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
