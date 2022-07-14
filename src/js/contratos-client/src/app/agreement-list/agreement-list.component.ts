@@ -26,6 +26,7 @@ export class AgreementListComponent implements OnInit {
   instituteIdChosen: String = '';
   categories!: Observable<Category[]>;
   categoryIdChosen: String = '';
+  durationTypeChosen: AgreementDurationType = AgreementDurationType.SHORT;
 
   constructor(
       private categoryService: CategoryService,
@@ -42,7 +43,7 @@ export class AgreementListComponent implements OnInit {
     this.institutes = this.instituteService.getInstitutesListBy(this.provinceChosen, this.instituteKindChosen);
     this.provinces = this.instituteService.getProvinces(this.instituteKindChosen);
     this.instituteKinds = this.instituteService.getKinds(this.provinceChosen);
-    this.agreements = this.agreementService.getAgreementsList(this.categoryIdChosen);
+    this.agreements = this.agreementService.getAgreementsList(this.durationTypeChosen, this.categoryIdChosen);
   }
 
   reloadData() {

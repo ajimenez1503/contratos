@@ -50,7 +50,7 @@ public class AgreementService {
                 requestDurationType = new ArrayList<>(EnumSet.allOf(AgreementDurationType.class));
             }
         }
-        
+
         LOGGER.info("GET Agreements by duration kind '{}' and category '{}'", requestDurationType, requestCategory);
         return agreementRepository.search(requestDurationType, requestCategory);
     }

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { AgreementDurationType } from "./agreementDurationType";
 
 @Injectable({
   providedIn: 'root'
@@ -14,8 +15,8 @@ export class AgreementService {
     return this.http.get(`${this.baseUrl}/${id}`);
   }
 
-  getAgreementsList(category: String): Observable<any> {
-    return this.http.get(`${this.baseUrl}?category=${category}`);
+  getAgreementsList(durationType: AgreementDurationType, category: String): Observable<any> {
+    return this.http.get(`${this.baseUrl}?durationType=${durationType}&category=${category}`);
   }
 
   createAgreement(agreementRequest: Object): Observable<Object> {
